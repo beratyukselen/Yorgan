@@ -41,6 +41,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 17
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        
         return button
     }()
     
@@ -63,9 +64,35 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         title.append(imageString)
 
         button.setAttributedTitle(title, for: .normal)
+        
         return button
     }()
-
+    
+    private let loginButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 15),
+            .foregroundColor: UIColor(named: "textColor") ?? UIColor.black
+        ]
+        
+        let boldAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 15),
+            .foregroundColor: UIColor(named: "textColor") ?? UIColor.black
+        ]
+        
+        let attributedString = NSMutableAttributedString(string: "Zaten üye misin?", attributes: normalAttributes)
+        
+        let boldPart = NSAttributedString(string: " Giriş", attributes: boldAttributes)
+        attributedString.append(boldPart)
+        
+        let normalPart = NSAttributedString(string: " Yap", attributes: normalAttributes)
+        attributedString.append(normalPart)
+        
+        button.setAttributedTitle(attributedString, for: .normal)
+        
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +102,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         
         nextButton.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
         skipButton.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
 
         setupViews()
     }
@@ -84,11 +112,13 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         view.addSubview(pageControl)
         view.addSubview(nextButton)
         view.addSubview(skipButton)
+        view.addSubview(loginButton)
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         skipButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -99,40 +129,56 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
             pageControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
             nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextButton.widthAnchor.constraint(equalToConstant: 340),
             nextButton.heightAnchor.constraint(equalToConstant: 50),
             
             skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
 
     @objc private func handleNext() {
-        let nextIndex = min(pageControl.currentPage + 1, viewModel.pageCount - 1)
-
-        let contentOffset = CGPoint(x: CGFloat(nextIndex) * collectionView.frame.width, y: 0)
-        collectionView.setContentOffset(contentOffset, animated: true)
-
-        pageControl.currentPage = nextIndex
-
         if pageControl.currentPage == viewModel.pageCount - 1 {
-            nextButton.setTitle("KAYIT OL", for: .normal)
+            goToRegisterScreen()
         } else {
-            nextButton.setTitle("DEVAM", for: .normal)
+            let nextIndex = min(pageControl.currentPage + 1, viewModel.pageCount - 1)
+
+            let contentOffset = CGPoint(x: CGFloat(nextIndex) * collectionView.frame.width, y: 0)
+            collectionView.setContentOffset(contentOffset, animated: true)
+
+            pageControl.currentPage = nextIndex
+
+            if pageControl.currentPage == viewModel.pageCount - 1 {
+                nextButton.setTitle("KAYIT OL", for: .normal)
+            } else {
+                nextButton.setTitle("DEVAM", for: .normal)
+            }
         }
     }
+
     
     @objc private func handleSkip() {
         finishOnboarding()
     }
     
+    @objc private func handleLogin() {
+        let loginVC = LoginViewController()
+        navigationController?.pushViewController(loginVC, animated: true)
+    }
+    
+    private func goToRegisterScreen() {
+        let registerVC = RegisterViewController()
+        navigationController?.pushViewController(registerVC, animated: true)
+    }
+
     private func finishOnboarding() {
-        UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
-        let mainVC = MainViewController()
-        mainVC.modalPresentationStyle = .fullScreen
-        present(mainVC, animated: true, completion: nil)
+        let registerVC = RegisterViewController()
+        navigationController?.pushViewController(registerVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

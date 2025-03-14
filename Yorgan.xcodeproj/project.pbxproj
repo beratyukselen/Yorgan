@@ -17,11 +17,15 @@
 		FD3994D12D7E75780070B725 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FD3994D02D7E75780070B725 /* FirebaseAuth */; };
 		FD3994D32D7E75780070B725 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FD3994D22D7E75780070B725 /* FirebaseCore */; };
 		FD3994D52D7E75780070B725 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FD3994D42D7E75780070B725 /* FirebaseFirestore */; };
-		FD3994D92D7E7C020070B725 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994D82D7E7C020070B725 /* MainViewController.swift */; };
 		FD3994E82D810F6E0070B725 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994E72D810F6E0070B725 /* OnboardingPage.swift */; };
 		FD3994EA2D810F820070B725 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994E92D810F820070B725 /* OnboardingViewModel.swift */; };
 		FD3994EC2D810FAC0070B725 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994EB2D810FAC0070B725 /* OnboardingViewController.swift */; };
 		FD3994EE2D810FCF0070B725 /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994ED2D810FCF0070B725 /* OnboardingCell.swift */; };
+		FD3994F02D83AA160070B725 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994EF2D83AA160070B725 /* RegisterViewController.swift */; };
+		FD3994F22D83AA260070B725 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F12D83AA260070B725 /* RegisterViewModel.swift */; };
+		FD3994F42D83B1D40070B725 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F32D83B1D40070B725 /* LoginViewController.swift */; };
+		FD3994F62D83BA1A0070B725 /* RegisterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F52D83BA1A0070B725 /* RegisterCell.swift */; };
+		FD3994F82D83BA7D0070B725 /* RegisterPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F72D83BA7D0070B725 /* RegisterPage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,11 +38,15 @@
 		FD3994C32D7E72F20070B725 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FD3994C52D7E72F20070B725 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD3994CD2D7E74D60070B725 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		FD3994D82D7E7C020070B725 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FD3994E72D810F6E0070B725 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		FD3994E92D810F820070B725 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		FD3994EB2D810FAC0070B725 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		FD3994ED2D810FCF0070B725 /* OnboardingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCell.swift; sourceTree = "<group>"; };
+		FD3994EF2D83AA160070B725 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		FD3994F12D83AA260070B725 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		FD3994F32D83B1D40070B725 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		FD3994F52D83BA1A0070B725 /* RegisterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCell.swift; sourceTree = "<group>"; };
+		FD3994F72D83BA7D0070B725 /* RegisterPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +87,6 @@
 				FD3994E42D810F2F0070B725 /* Model */,
 				FD3994B42D7E72F00070B725 /* AppDelegate.swift */,
 				FD3994B62D7E72F00070B725 /* SceneDelegate.swift */,
-				FD3994D82D7E7C020070B725 /* MainViewController.swift */,
 				FD3994BA2D7E72F00070B725 /* Main.storyboard */,
 				FD3994C02D7E72F20070B725 /* Assets.xcassets */,
 				FD3994C22D7E72F20070B725 /* LaunchScreen.storyboard */,
@@ -94,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				FD3994E72D810F6E0070B725 /* OnboardingPage.swift */,
+				FD3994F72D83BA7D0070B725 /* RegisterPage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -103,6 +111,9 @@
 			children = (
 				FD3994ED2D810FCF0070B725 /* OnboardingCell.swift */,
 				FD3994EB2D810FAC0070B725 /* OnboardingViewController.swift */,
+				FD3994EF2D83AA160070B725 /* RegisterViewController.swift */,
+				FD3994F32D83B1D40070B725 /* LoginViewController.swift */,
+				FD3994F52D83BA1A0070B725 /* RegisterCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -111,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				FD3994E92D810F820070B725 /* OnboardingViewModel.swift */,
+				FD3994F12D83AA260070B725 /* RegisterViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -195,14 +207,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD3994F62D83BA1A0070B725 /* RegisterCell.swift in Sources */,
+				FD3994F02D83AA160070B725 /* RegisterViewController.swift in Sources */,
+				FD3994F22D83AA260070B725 /* RegisterViewModel.swift in Sources */,
+				FD3994F82D83BA7D0070B725 /* RegisterPage.swift in Sources */,
 				FD3994B52D7E72F00070B725 /* AppDelegate.swift in Sources */,
-				FD3994D92D7E7C020070B725 /* MainViewController.swift in Sources */,
 				FD3994EA2D810F820070B725 /* OnboardingViewModel.swift in Sources */,
 				FD3994B72D7E72F00070B725 /* SceneDelegate.swift in Sources */,
 				FD3994EE2D810FCF0070B725 /* OnboardingCell.swift in Sources */,
 				FD3994E82D810F6E0070B725 /* OnboardingPage.swift in Sources */,
 				FD3994EC2D810FAC0070B725 /* OnboardingViewController.swift in Sources */,
 				FD3994BF2D7E72F00070B725 /* Yorgan.xcdatamodeld in Sources */,
+				FD3994F42D83B1D40070B725 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
