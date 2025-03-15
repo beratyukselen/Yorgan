@@ -7,23 +7,61 @@
 
 import UIKit
 
-class RegisterCell: UIViewController {
+class RegisterCell: UICollectionViewCell {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+    let registerLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 28)
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 25)
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let surnameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 25)
+        label.textAlignment = .left
+        label.numberOfLines = 3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let nameTextField: UITextField = {
+       let textField = UITextField()
+       return textField
+    }()
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addSubview(registerLabel)
+        addSubview(nameLabel)
+        addSubview(surnameLabel)
+        
+        NSLayoutConstraint.activate([
+        
+            registerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 55),
+            registerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 120),
+            
+            surnameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 150)
+            
+            
+        ])
     }
-    */
 
+    required init(coder: NSCoder) {
+        fatalError("init(coder: ) has not been implemented")
+    }
 }

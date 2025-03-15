@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct RegisterPage {
+    let register: String
+    let name: String
+    let surname: String
+}
