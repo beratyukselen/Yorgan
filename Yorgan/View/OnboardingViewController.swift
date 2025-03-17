@@ -41,7 +41,6 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 17
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        
         return button
     }()
     
@@ -134,7 +133,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
             nextButton.widthAnchor.constraint(equalToConstant: 340),
             nextButton.heightAnchor.constraint(equalToConstant: 50),
             
-            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 17),
             skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
