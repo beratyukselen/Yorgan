@@ -13,7 +13,6 @@ class OnboardingCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 28)
         label.textAlignment = .center
-        label.numberOfLines = 4
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -29,7 +28,6 @@ class OnboardingCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textAlignment = .center
-        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -38,7 +36,6 @@ class OnboardingCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
-        label.numberOfLines = 3
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

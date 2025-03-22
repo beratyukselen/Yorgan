@@ -54,6 +54,9 @@ class RegisterViewController: UIViewController, UICollectionViewDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
@@ -74,7 +77,7 @@ class RegisterViewController: UIViewController, UICollectionViewDelegate, UIColl
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -93,8 +96,15 @@ class RegisterViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     @objc private func handleBack() {
-        navigationController?.popViewController(animated: true)
-    }
+            if pageControl.currentPage == 0 {
+                navigationController?.popViewController(animated: true)
+            } else {
+                let prevIndex = max(pageControl.currentPage - 1, 0)
+                let contentOffset = CGPoint(x: CGFloat(prevIndex) * collectionView.frame.width, y: 0)
+                collectionView.setContentOffset(contentOffset, animated: true)
+                pageControl.currentPage = prevIndex
+            }
+        }
     
     @objc private func handleNext() {
         let nextIndex = min(pageControl.currentPage + 1, viewModel.pageCount - 1)
@@ -118,24 +128,44 @@ class RegisterViewController: UIViewController, UICollectionViewDelegate, UIColl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RegisterCell
         cell.delegate = self
         let page = viewModel.getPage(at: indexPath.item)
-        cell.registerLabel.text = page.register
-        cell.nameLabel.text = page.name
-        cell.surnameLabel.text = page.surname
+        cell.configure(with: page, at: indexPath.item)
         return cell
     }
+
     
-    func textFieldsDidChange(name: String, surname: String) {
-            let isValid = !name.isEmpty && !surname.isEmpty
-            nextButton.isEnabled = isValid
-            nextButton.backgroundColor = isValid ? UIColor.systemBlue : UIColor.systemGray
+    func textFieldsDidChange(name: String?, surname: String?, phone: String?, pageIndex: Int) {
+
+        var isValid = false
+
+        if pageIndex == 0 {
+            isValid = !(name?.isEmpty ?? true) && !(surname?.isEmpty ?? true)
+
+            if let name = name, let surname = surname {
+                isValid = isValid && name.count >= 2 && surname.count >= 2
+            }
+
+        } else if pageIndex == 1 {
+            if let phone = phone {
+                let digitsOnly = phone.filter { $0.isNumber }
+                isValid = digitsOnly.count == 10
+            }
         }
-    
+
+        nextButton.isEnabled = isValid
+        nextButton.backgroundColor = isValid ? UIColor.systemBlue : UIColor.systemGray
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
+        let pageIndex = Int(round(scrollView.contentOffset.x / view.frame.width))
         
+        if pageControl.currentPage != pageIndex {
+            pageControl.currentPage = pageIndex
+            nextButton.isEnabled = false
+            nextButton.backgroundColor = UIColor.systemGray
+        }
     }
 }
