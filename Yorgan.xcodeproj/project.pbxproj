@@ -26,6 +26,11 @@
 		FD3994F42D83B1D40070B725 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F32D83B1D40070B725 /* LoginViewController.swift */; };
 		FD3994F62D83BA1A0070B725 /* RegisterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F52D83BA1A0070B725 /* RegisterCell.swift */; };
 		FD3994F82D83BA7D0070B725 /* RegisterPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F72D83BA7D0070B725 /* RegisterPage.swift */; };
+		FD438B172DA867BF00377879 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD438B162DA867BF00377879 /* HomeViewController.swift */; };
+		FDC316AA2DA5C419003C9128 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC316A92DA5C419003C9128 /* AuthService.swift */; };
+		FDC316AC2DA5C439003C9128 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */; };
+		FDC316AE2DA5C479003C9128 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = FDC316AD2DA5C479003C9128 /* FirebaseFunctions */; };
+		FDC316B02DA5C497003C9128 /* FirebaseFunctionsCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = FDC316AF2DA5C497003C9128 /* FirebaseFunctionsCombine-Community */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +52,9 @@
 		FD3994F32D83B1D40070B725 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		FD3994F52D83BA1A0070B725 /* RegisterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCell.swift; sourceTree = "<group>"; };
 		FD3994F72D83BA7D0070B725 /* RegisterPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPage.swift; sourceTree = "<group>"; };
+		FD438B162DA867BF00377879 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		FDC316A92DA5C419003C9128 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +65,8 @@
 				FD3994D32D7E75780070B725 /* FirebaseCore in Frameworks */,
 				FD3994D12D7E75780070B725 /* FirebaseAuth in Frameworks */,
 				FD3994D52D7E75780070B725 /* FirebaseFirestore in Frameworks */,
+				FDC316B02DA5C497003C9128 /* FirebaseFunctionsCombine-Community in Frameworks */,
+				FDC316AE2DA5C479003C9128 /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +92,7 @@
 		FD3994B32D7E72F00070B725 /* Yorgan */ = {
 			isa = PBXGroup;
 			children = (
+				FDC316A32DA31199003C9128 /* Services */,
 				FD3994E62D810F480070B725 /* ViewModel */,
 				FD3994E52D810F3D0070B725 /* View */,
 				FD3994E42D810F2F0070B725 /* Model */,
@@ -114,6 +125,8 @@
 				FD3994EF2D83AA160070B725 /* RegisterViewController.swift */,
 				FD3994F32D83B1D40070B725 /* LoginViewController.swift */,
 				FD3994F52D83BA1A0070B725 /* RegisterCell.swift */,
+				FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */,
+				FD438B162DA867BF00377879 /* HomeViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -125,6 +138,14 @@
 				FD3994F12D83AA260070B725 /* RegisterViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		FDC316A32DA31199003C9128 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FDC316A92DA5C419003C9128 /* AuthService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,6 +168,8 @@
 				FD3994D02D7E75780070B725 /* FirebaseAuth */,
 				FD3994D22D7E75780070B725 /* FirebaseCore */,
 				FD3994D42D7E75780070B725 /* FirebaseFirestore */,
+				FDC316AD2DA5C479003C9128 /* FirebaseFunctions */,
+				FDC316AF2DA5C497003C9128 /* FirebaseFunctionsCombine-Community */,
 			);
 			productName = Yorgan;
 			productReference = FD3994B12D7E72F00070B725 /* Yorgan.app */;
@@ -211,8 +234,11 @@
 				FD3994F02D83AA160070B725 /* RegisterViewController.swift in Sources */,
 				FD3994F22D83AA260070B725 /* RegisterViewModel.swift in Sources */,
 				FD3994F82D83BA7D0070B725 /* RegisterPage.swift in Sources */,
+				FDC316AC2DA5C439003C9128 /* EmailVerificationViewController.swift in Sources */,
+				FD438B172DA867BF00377879 /* HomeViewController.swift in Sources */,
 				FD3994B52D7E72F00070B725 /* AppDelegate.swift in Sources */,
 				FD3994EA2D810F820070B725 /* OnboardingViewModel.swift in Sources */,
+				FDC316AA2DA5C419003C9128 /* AuthService.swift in Sources */,
 				FD3994B72D7E72F00070B725 /* SceneDelegate.swift in Sources */,
 				FD3994EE2D810FCF0070B725 /* OnboardingCell.swift in Sources */,
 				FD3994E82D810F6E0070B725 /* OnboardingPage.swift in Sources */,
@@ -378,7 +404,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -407,7 +433,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -470,6 +496,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FD3994CF2D7E75780070B725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		FDC316AD2DA5C479003C9128 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD3994CF2D7E75780070B725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		FDC316AF2DA5C497003C9128 /* FirebaseFunctionsCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD3994CF2D7E75780070B725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFunctionsCombine-Community";
 		};
 /* End XCSwiftPackageProductDependency section */
 

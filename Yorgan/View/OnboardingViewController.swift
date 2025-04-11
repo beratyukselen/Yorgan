@@ -210,3 +210,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
     }
 }
 
+#Preview {
+    OnboardingViewController()
+}
+

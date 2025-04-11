@@ -8,7 +8,7 @@
 import UIKit
 
 protocol RegisterCellDelegate: AnyObject {
-    func textFieldsDidChange(name: String?, surname: String?, phone: String?, pageIndex: Int)
+    func textFieldsDidChange(name: String?, surname: String?, email: String?, pageIndex: Int)
 }
 
 class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
@@ -63,7 +63,7 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
         return textField
     }()
     
-    let phoneLabel: UILabel = {
+    let emailLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 23)
         label.textColor = UIColor.systemGray
@@ -72,23 +72,15 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
         return label
     }()
     
-    let phoneTextField: UITextField = {
+    let emailTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .none
         textField.font = UIFont.systemFont(ofSize: 20)
         textField.textColor = UIColor.systemGray
-        textField.keyboardType = .phonePad
+        textField.keyboardType = .emailAddress
         textField.returnKeyType = .done
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
-    }()
-    
-    let countryCodeLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.systemGray
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     
     let infoLabel: UILabel = {
@@ -107,8 +99,8 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
             addBottomBorder(to: surnameTextField)
         }
 
-        if !phoneTextField.isHidden {
-            addBottomBorder(to: phoneTextField)
+        if !emailTextField.isHidden {
+            addBottomBorder(to: emailTextField)
         }
     }
 
@@ -120,18 +112,17 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
         addSubview(nameTextField)
         addSubview(surnameLabel)
         addSubview(surnameTextField)
-        addSubview(phoneLabel)
-        addSubview(phoneTextField)
-        addSubview(countryCodeLabel)
+        addSubview(emailLabel)
+        addSubview(emailTextField)
         addSubview(infoLabel)
         
-        phoneTextField.delegate = self
+        emailTextField.delegate = self
         nameTextField.delegate = self
         surnameTextField.delegate = self
         
         nameTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
         surnameTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
-        phoneTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 55),
@@ -153,21 +144,17 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
             surnameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
             surnameTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            phoneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 165),
-            phoneLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
-            
-            countryCodeLabel.centerYAnchor.constraint(equalTo: phoneTextField.centerYAnchor),
-            countryCodeLabel.leadingAnchor.constraint(equalTo: phoneLabel.leadingAnchor),
-            countryCodeLabel.widthAnchor.constraint(equalToConstant: 50),
+            emailLabel.topAnchor.constraint(equalTo: topAnchor, constant: 165),
+            emailLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
 
-            phoneTextField.topAnchor.constraint(equalTo: phoneLabel.bottomAnchor, constant: 15),
-            phoneTextField.leadingAnchor.constraint(equalTo: countryCodeLabel.trailingAnchor, constant: 5),
-            phoneTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
-            phoneTextField.heightAnchor.constraint(equalToConstant: 40),
+            emailTextField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 10),
+            emailTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
+            emailTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
+            emailTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            infoLabel.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 15),
-            infoLabel.leadingAnchor.constraint(equalTo: phoneLabel.leadingAnchor),
-            infoLabel.trailingAnchor.constraint(equalTo: phoneTextField.trailingAnchor),
+            infoLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 15),
+            infoLabel.leadingAnchor.constraint(equalTo: emailLabel.leadingAnchor),
+            infoLabel.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
         ])
     }
     
@@ -175,8 +162,8 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
         delegate?.textFieldsDidChange(
             name: nameTextField.text,
             surname: surnameTextField.text,
-            phone: phoneTextField.text,
-            pageIndex: phoneTextField.isHidden ? 0 : 1
+            email: emailTextField.text,
+            pageIndex: emailTextField.isHidden ? 0 : 1
         )
     }
 
@@ -213,9 +200,8 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
         surnameLabel.isHidden = !isNamePage
         surnameTextField.isHidden = !isNamePage
 
-        phoneLabel.isHidden = isNamePage
-        phoneTextField.isHidden = isNamePage
-        countryCodeLabel.isHidden = isNamePage
+        emailLabel.isHidden = isNamePage
+        emailTextField.isHidden = isNamePage
         infoLabel.isHidden = isNamePage
 
         if isNamePage {
@@ -225,15 +211,21 @@ class RegisterCell: UICollectionViewCell, UITextFieldDelegate {
             surnameLabel.text = page.surname
             surnameTextField.placeholder = page.surnamePlaceholder
         } else {
-            phoneLabel.text = page.phone
-            phoneTextField.placeholder = page.phonePlaceholder
-            countryCodeLabel.text = page.country
+            emailLabel.text = page.email
+            emailTextField.placeholder = page.emailPlaceholder
             infoLabel.text = page.info
         }
     }
+    
+    func getEmail() -> String? {
+        return emailTextField.isHidden ? nil : emailTextField.text
+    }
+
 
 
     required init(coder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
     }
 }
+
+
