@@ -8,8 +8,8 @@ import UIKit
 class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
 
     var userEmail: String!
-    var userName: String!
-    var userSurname: String!
+    var userName: String?
+    var userSurname: String?
 
     private let containerView = UIView()
     private let descriptionLabel = UILabel()
@@ -148,21 +148,25 @@ class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    AuthService.shared.registerNewUser(name: self.userName, surname: self.userSurname, email: self.userEmail) { success in
-                        if success {
-                            let homeVC = HomeViewController()
-                            homeVC.modalPresentationStyle = .fullScreen
-                            self.present(homeVC, animated: true)
-                        } else {
-                            self.showError("Kullanıcı kaydedilemedi.")
+                    if let name = self.userName, let surname = self.userSurname {
+                        AuthService.shared.registerNewUser(name: name, surname: surname, email: self.userEmail) { success in
+                            if success {
+                                self.goToHome()
+                            } else {
+                                self.showError("Kullanıcı kaydedilemedi.")
+                            }
                         }
+                    } else {
+                        self.goToHome()
                     }
+
                 case .failure(let error):
                     self.showError("Kod doğrulanamadı: \(error.localizedDescription)")
                 }
             }
         }
     }
+
 
     @objc private func resendCode() {
         resendButton.isEnabled = false
@@ -199,6 +203,13 @@ class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 
+    private func goToHome() {
+        let homeVC = HomeViewController()
+        homeVC.modalPresentationStyle = .fullScreen
+        self.present(homeVC, animated: true)
+    }
+
+    
     private func showError(_ message: String) {
         let alert = UIAlertController(title: "Hata", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Tamam", style: .default))

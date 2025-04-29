@@ -39,6 +39,8 @@ class OnboardingCell: UICollectionViewCell {
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+        
+        
     }()
     
     override init(frame: CGRect) {

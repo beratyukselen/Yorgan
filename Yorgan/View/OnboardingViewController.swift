@@ -169,6 +169,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         let loginVC = LoginViewController()
         navigationController?.pushViewController(loginVC, animated: true)
     }
+
     
     private func goToRegisterScreen() {
         let registerVC = RegisterViewController()
