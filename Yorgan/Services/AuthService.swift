@@ -21,7 +21,6 @@ class AuthService {
         let cleanEmail = email.lowercased()
 
         if isLogin {
-            // Giriş modunda önce kullanıcı var mı kontrol et
             let docRef = db.collection("users").document(cleanEmail)
             docRef.getDocument { snapshot, error in
                 if let error = error {
@@ -36,11 +35,9 @@ class AuthService {
                     return
                 }
 
-                // Kullanıcı varsa kod gönder
                 self.sendCodeWithCloudFunction(email: cleanEmail, completion: completion)
             }
         } else {
-            // Kayıt modunda doğrudan kod gönder
             self.sendCodeWithCloudFunction(email: cleanEmail, completion: completion)
         }
     }

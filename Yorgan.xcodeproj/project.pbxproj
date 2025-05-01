@@ -27,6 +27,13 @@
 		FD3994F62D83BA1A0070B725 /* RegisterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F52D83BA1A0070B725 /* RegisterCell.swift */; };
 		FD3994F82D83BA7D0070B725 /* RegisterPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3994F72D83BA7D0070B725 /* RegisterPage.swift */; };
 		FD438B172DA867BF00377879 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD438B162DA867BF00377879 /* HomeViewController.swift */; };
+		FD4745292DC3F263006FD99C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4745282DC3F263006FD99C /* MainTabBarController.swift */; };
+		FD47452B2DC409B3006FD99C /* IncomesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47452A2DC409B3006FD99C /* IncomesViewController.swift */; };
+		FD47452D2DC409C3006FD99C /* ExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47452C2DC409C3006FD99C /* ExpensesViewController.swift */; };
+		FD47452F2DC409CE006FD99C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47452E2DC409CE006FD99C /* ProfileViewController.swift */; };
+		FD4745312DC409DC006FD99C /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4745302DC409DC006FD99C /* SummaryViewController.swift */; };
+		FD4745352DC4102B006FD99C /* AddIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4745342DC4102B006FD99C /* AddIncomeViewController.swift */; };
+		FD47453E2DC414F1006FD99C /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47453D2DC414F1006FD99C /* CoreDataManager.swift */; };
 		FDC316AA2DA5C419003C9128 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC316A92DA5C419003C9128 /* AuthService.swift */; };
 		FDC316AC2DA5C439003C9128 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */; };
 		FDC316AE2DA5C479003C9128 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = FDC316AD2DA5C479003C9128 /* FirebaseFunctions */; };
@@ -53,6 +60,13 @@
 		FD3994F52D83BA1A0070B725 /* RegisterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCell.swift; sourceTree = "<group>"; };
 		FD3994F72D83BA7D0070B725 /* RegisterPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPage.swift; sourceTree = "<group>"; };
 		FD438B162DA867BF00377879 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		FD4745282DC3F263006FD99C /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		FD47452A2DC409B3006FD99C /* IncomesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomesViewController.swift; sourceTree = "<group>"; };
+		FD47452C2DC409C3006FD99C /* ExpensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesViewController.swift; sourceTree = "<group>"; };
+		FD47452E2DC409CE006FD99C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		FD4745302DC409DC006FD99C /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
+		FD4745342DC4102B006FD99C /* AddIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIncomeViewController.swift; sourceTree = "<group>"; };
+		FD47453D2DC414F1006FD99C /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		FDC316A92DA5C419003C9128 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,6 +141,12 @@
 				FD3994F52D83BA1A0070B725 /* RegisterCell.swift */,
 				FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */,
 				FD438B162DA867BF00377879 /* HomeViewController.swift */,
+				FD4745282DC3F263006FD99C /* MainTabBarController.swift */,
+				FD47452A2DC409B3006FD99C /* IncomesViewController.swift */,
+				FD47452C2DC409C3006FD99C /* ExpensesViewController.swift */,
+				FD47452E2DC409CE006FD99C /* ProfileViewController.swift */,
+				FD4745302DC409DC006FD99C /* SummaryViewController.swift */,
+				FD4745342DC4102B006FD99C /* AddIncomeViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -144,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				FDC316A92DA5C419003C9128 /* AuthService.swift */,
+				FD47453D2DC414F1006FD99C /* CoreDataManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -234,18 +255,25 @@
 				FD3994F62D83BA1A0070B725 /* RegisterCell.swift in Sources */,
 				FD3994F02D83AA160070B725 /* RegisterViewController.swift in Sources */,
 				FD3994F22D83AA260070B725 /* RegisterViewModel.swift in Sources */,
+				FD47452B2DC409B3006FD99C /* IncomesViewController.swift in Sources */,
 				FD3994F82D83BA7D0070B725 /* RegisterPage.swift in Sources */,
 				FDC316AC2DA5C439003C9128 /* EmailVerificationViewController.swift in Sources */,
+				FD47453E2DC414F1006FD99C /* CoreDataManager.swift in Sources */,
 				FD438B172DA867BF00377879 /* HomeViewController.swift in Sources */,
 				FD3994B52D7E72F00070B725 /* AppDelegate.swift in Sources */,
 				FD3994EA2D810F820070B725 /* OnboardingViewModel.swift in Sources */,
+				FD47452F2DC409CE006FD99C /* ProfileViewController.swift in Sources */,
 				FDC316AA2DA5C419003C9128 /* AuthService.swift in Sources */,
 				FD3994B72D7E72F00070B725 /* SceneDelegate.swift in Sources */,
+				FD4745352DC4102B006FD99C /* AddIncomeViewController.swift in Sources */,
+				FD4745292DC3F263006FD99C /* MainTabBarController.swift in Sources */,
 				FD3994EE2D810FCF0070B725 /* OnboardingCell.swift in Sources */,
 				FD3994E82D810F6E0070B725 /* OnboardingPage.swift in Sources */,
 				FD3994EC2D810FAC0070B725 /* OnboardingViewController.swift in Sources */,
 				FD3994BF2D7E72F00070B725 /* Yorgan.xcdatamodeld in Sources */,
 				FD3994F42D83B1D40070B725 /* LoginViewController.swift in Sources */,
+				FD47452D2DC409C3006FD99C /* ExpensesViewController.swift in Sources */,
+				FD4745312DC409DC006FD99C /* SummaryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

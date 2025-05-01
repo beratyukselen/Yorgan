@@ -19,12 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         // IntroViewController'ı başlatıyoruz
-        let onboardingVC = OnboardingViewController()
-        //let verifyVC = EmailVerificationViewController()
+        //let onboardingVC = OnboardingViewController()
+        let mainVC = MainTabBarController()
+        
         
         // IntroViewController'ı bir navigation controller ile sarmalıyoruz
-        let navigationController = UINavigationController(rootViewController: onboardingVC)
-        //let navigationController = UINavigationController(rootViewController: verifyVC)
+        //let navigationController = UINavigationController(rootViewController: onboardingVC)
+        let navigationController = UINavigationController(rootViewController: mainVC)
         
         // rootViewController olarak navigation controller'ı belirliyoruz
         window?.rootViewController = navigationController

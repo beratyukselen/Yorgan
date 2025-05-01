@@ -204,7 +204,7 @@ class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func goToHome() {
-        let homeVC = HomeViewController()
+        let homeVC = MainTabBarController()
         homeVC.modalPresentationStyle = .fullScreen
         self.present(homeVC, animated: true)
     }
