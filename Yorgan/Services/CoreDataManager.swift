@@ -47,4 +47,33 @@ class CoreDataManager {
             return []
         }
     }
+    
+    func saveExpense(title: String, amount: Double, date: Date,category: String ) {
+        let expense = Expense(context: context)
+        expense.title = title
+        expense.amount = amount
+        expense.date = date
+        expense.category = category
+        
+        do {
+            try context.save()
+            print("✅ Gider başarıyla kaydedildi.")
+        } catch {
+            print("❌ Gider kaydedilemedi: \(error.localizedDescription)")
+        }
+    }
+    
+    func fetchExpenses() -> [Expense] {
+        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            print(" Giderler çekilemedi: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
+    
 }

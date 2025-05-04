@@ -8,10 +8,8 @@
 import UIKit
 
 class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+
     private let tableView = UITableView()
-    private var incomes: [Income] = []
-    
     private let addButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -25,23 +23,39 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
         return button
     }()
     
+    // MARK: - ViewModel
+    private let viewModel = IncomeViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Gelirler"
+        
         setupTableView()
         setupAddButton()
-        tableView.reloadData()
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshIncomes), name: NSNotification.Name("IncomeAdded"), object: nil)
+        
+        // ViewModel'den veri güncellemesi alındığında tabloyu yenile
+        viewModel.onDataUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+
+        // Bildirimle veri güncelle
+        NotificationCenter.default.addObserver(self, selector: #selector(handleIncomeAdded), name: NSNotification.Name("IncomeAdded"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        incomes = CoreDataManager.shared.fetchIncomes()
-        tableView.reloadData()
+        viewModel.fetchIncomes()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
-    
+    // MARK: - UI Setup
+
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,25 +86,27 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
         addButton.addTarget(self, action: #selector(addIncomeTapped), for: .touchUpInside)
     }
     
+    // MARK: - Actions
+
     @objc private func addIncomeTapped() {
         let vc = AddIncomeViewController()
         vc.modalPresentationStyle = .formSheet
         present(vc, animated: true, completion: nil)
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return incomes.count
-    }
-    
-    @objc private func refreshIncomes() {
-        incomes = CoreDataManager.shared.fetchIncomes()
-        tableView.reloadData()
+    @objc private func handleIncomeAdded() {
+        viewModel.fetchIncomes()
     }
 
+    // MARK: - TableView
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.numberOfItems()
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IncomeCell", for: indexPath)
-        let income = incomes[indexPath.row]
+        let income = viewModel.income(at: indexPath.row)
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         cell.textLabel?.text = "\(income.title ?? "Gelir") - \(income.amount)₺ • \(formatter.string(from: income.date ?? Date()))"

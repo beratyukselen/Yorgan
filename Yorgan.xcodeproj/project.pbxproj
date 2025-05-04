@@ -34,6 +34,9 @@
 		FD4745312DC409DC006FD99C /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4745302DC409DC006FD99C /* SummaryViewController.swift */; };
 		FD4745352DC4102B006FD99C /* AddIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4745342DC4102B006FD99C /* AddIncomeViewController.swift */; };
 		FD47453E2DC414F1006FD99C /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47453D2DC414F1006FD99C /* CoreDataManager.swift */; };
+		FD56A55D2DC8107E00ADED8D /* IncomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD56A55C2DC8107E00ADED8D /* IncomeViewModel.swift */; };
+		FD56A55F2DC8146500ADED8D /* AddExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD56A55E2DC8146500ADED8D /* AddExpensesViewController.swift */; };
+		FD56A5612DC8147800ADED8D /* ExpensesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD56A5602DC8147800ADED8D /* ExpensesViewModel.swift */; };
 		FDC316AA2DA5C419003C9128 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC316A92DA5C419003C9128 /* AuthService.swift */; };
 		FDC316AC2DA5C439003C9128 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */; };
 		FDC316AE2DA5C479003C9128 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = FDC316AD2DA5C479003C9128 /* FirebaseFunctions */; };
@@ -67,6 +70,9 @@
 		FD4745302DC409DC006FD99C /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		FD4745342DC4102B006FD99C /* AddIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIncomeViewController.swift; sourceTree = "<group>"; };
 		FD47453D2DC414F1006FD99C /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		FD56A55C2DC8107E00ADED8D /* IncomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewModel.swift; sourceTree = "<group>"; };
+		FD56A55E2DC8146500ADED8D /* AddExpensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpensesViewController.swift; sourceTree = "<group>"; };
+		FD56A5602DC8147800ADED8D /* ExpensesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesViewModel.swift; sourceTree = "<group>"; };
 		FDC316A92DA5C419003C9128 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,6 +153,7 @@
 				FD47452E2DC409CE006FD99C /* ProfileViewController.swift */,
 				FD4745302DC409DC006FD99C /* SummaryViewController.swift */,
 				FD4745342DC4102B006FD99C /* AddIncomeViewController.swift */,
+				FD56A55E2DC8146500ADED8D /* AddExpensesViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -156,6 +163,8 @@
 			children = (
 				FD3994E92D810F820070B725 /* OnboardingViewModel.swift */,
 				FD3994F12D83AA260070B725 /* RegisterViewModel.swift */,
+				FD56A55C2DC8107E00ADED8D /* IncomeViewModel.swift */,
+				FD56A5602DC8147800ADED8D /* ExpensesViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -255,6 +264,7 @@
 				FD3994F62D83BA1A0070B725 /* RegisterCell.swift in Sources */,
 				FD3994F02D83AA160070B725 /* RegisterViewController.swift in Sources */,
 				FD3994F22D83AA260070B725 /* RegisterViewModel.swift in Sources */,
+				FD56A55D2DC8107E00ADED8D /* IncomeViewModel.swift in Sources */,
 				FD47452B2DC409B3006FD99C /* IncomesViewController.swift in Sources */,
 				FD3994F82D83BA7D0070B725 /* RegisterPage.swift in Sources */,
 				FDC316AC2DA5C439003C9128 /* EmailVerificationViewController.swift in Sources */,
@@ -264,12 +274,14 @@
 				FD3994EA2D810F820070B725 /* OnboardingViewModel.swift in Sources */,
 				FD47452F2DC409CE006FD99C /* ProfileViewController.swift in Sources */,
 				FDC316AA2DA5C419003C9128 /* AuthService.swift in Sources */,
+				FD56A55F2DC8146500ADED8D /* AddExpensesViewController.swift in Sources */,
 				FD3994B72D7E72F00070B725 /* SceneDelegate.swift in Sources */,
 				FD4745352DC4102B006FD99C /* AddIncomeViewController.swift in Sources */,
 				FD4745292DC3F263006FD99C /* MainTabBarController.swift in Sources */,
 				FD3994EE2D810FCF0070B725 /* OnboardingCell.swift in Sources */,
 				FD3994E82D810F6E0070B725 /* OnboardingPage.swift in Sources */,
 				FD3994EC2D810FAC0070B725 /* OnboardingViewController.swift in Sources */,
+				FD56A5612DC8147800ADED8D /* ExpensesViewModel.swift in Sources */,
 				FD3994BF2D7E72F00070B725 /* Yorgan.xcdatamodeld in Sources */,
 				FD3994F42D83B1D40070B725 /* LoginViewController.swift in Sources */,
 				FD47452D2DC409C3006FD99C /* ExpensesViewController.swift in Sources */,
