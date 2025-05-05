@@ -39,4 +39,19 @@ class IncomeViewModel {
         CoreDataManager.shared.saveIncome(title: title, amount: amount, date: date, category: category)
         fetchIncomes()
     }
+    
+    func categoryTotals() -> [String: Double] {
+            var totals: [String: Double] = [:]
+            for income in incomes {
+                let category = income.category ?? "Diğer"
+                totals[category, default: 0.0] += income.amount
+            }
+            return totals
+        }
+    
+    func totalAmount() -> Double {
+        return incomes.reduce(0) { $0 + $1.amount }
+    }
+
+    
 }

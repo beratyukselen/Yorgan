@@ -41,6 +41,7 @@
 		FDC316AC2DA5C439003C9128 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC316AB2DA5C439003C9128 /* EmailVerificationViewController.swift */; };
 		FDC316AE2DA5C479003C9128 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = FDC316AD2DA5C479003C9128 /* FirebaseFunctions */; };
 		FDC316B02DA5C497003C9128 /* FirebaseFunctionsCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = FDC316AF2DA5C497003C9128 /* FirebaseFunctionsCombine-Community */; };
+		FDEF55442DC96626007DA4EA /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = FDEF55432DC96626007DA4EA /* DGCharts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 				FD3994D12D7E75780070B725 /* FirebaseAuth in Frameworks */,
 				FD3994D52D7E75780070B725 /* FirebaseFirestore in Frameworks */,
 				FDC316B02DA5C497003C9128 /* FirebaseFunctionsCombine-Community in Frameworks */,
+				FDEF55442DC96626007DA4EA /* DGCharts in Frameworks */,
 				FDC316AE2DA5C479003C9128 /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -200,6 +202,7 @@
 				FD3994D42D7E75780070B725 /* FirebaseFirestore */,
 				FDC316AD2DA5C479003C9128 /* FirebaseFunctions */,
 				FDC316AF2DA5C497003C9128 /* FirebaseFunctionsCombine-Community */,
+				FDEF55432DC96626007DA4EA /* DGCharts */,
 			);
 			productName = Yorgan;
 			productReference = FD3994B12D7E72F00070B725 /* Yorgan.app */;
@@ -232,6 +235,7 @@
 			packageReferences = (
 				FD3994CF2D7E75780070B725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				FD438B182DAB2F9100377879 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				FD7701212DC95C920085AACD /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = FD3994B22D7E72F00070B725 /* Products */;
 			projectDirPath = "";
@@ -528,6 +532,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		FD7701212DC95C920085AACD /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -555,6 +567,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FD3994CF2D7E75780070B725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseFunctionsCombine-Community";
+		};
+		FDEF55432DC96626007DA4EA /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DGCharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 

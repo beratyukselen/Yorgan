@@ -31,4 +31,18 @@ class ExpensesViewModel {
         CoreDataManager.shared.saveExpense(title: title, amount: amount, date: date, category: category)
         fetchExpenses()
     }
+    
+    func categoryTotals() -> [String: Double] {
+        var totals: [String: Double] = [:]
+        for expense in expenses {
+            let key = expense.category ?? "Bilinmiyor"
+            totals[key, default: 0.0] += expense.amount
+        }
+        return totals
+    }
+    
+    func totalAmount() -> Double {
+        return expenses.reduce(0) { $0 + $1.amount }
+    }
+
 }
