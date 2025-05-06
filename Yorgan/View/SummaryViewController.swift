@@ -24,6 +24,7 @@ class SummaryViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Özet"
+        navigationController?.setNavigationBarHidden(true, animated: false)
 
         setupLayout()
 
@@ -92,6 +93,13 @@ class SummaryViewController: UIViewController {
         let dataSet = PieChartDataSet(entries: data, label: "")
         dataSet.colors = ChartColorTemplates.material()
         expensesChartView.data = PieChartData(dataSet: dataSet)
+
+        
+        let expenseTotal = expensesViewModel.categoryTotals().values.reduce(0, +)
+        expensesChartView.holeColor = .clear
+        expensesChartView.data = PieChartData(dataSet: dataSet)
+        expensesChartView.centerText = "\(expenseTotal) ₺"
+        
     }
 
     private func updateIncomeChart() {
@@ -101,6 +109,12 @@ class SummaryViewController: UIViewController {
         let dataSet = PieChartDataSet(entries: data, label: "")
         dataSet.colors = ChartColorTemplates.pastel()
         incomeChartView.data = PieChartData(dataSet: dataSet)
+        
+        let incomeTotal = incomeViewModel.categoryTotals().values.reduce(0, +)
+        incomeChartView.holeColor = .clear
+        incomeChartView.data = PieChartData(dataSet: dataSet)
+        incomeChartView.centerText = "\(incomeTotal) ₺"
+        
     }
 
     private func updateTotalChart() {
@@ -116,8 +130,11 @@ class SummaryViewController: UIViewController {
         let dataSet = PieChartDataSet(entries: entries, label: "")
         dataSet.colors = [UIColor.systemGreen, UIColor.systemRed]
         
+        totalChartView.holeColor = .clear
         totalChartView.data = PieChartData(dataSet: dataSet)
         totalChartView.centerText = "\(emoji) \(difference) ₺"
         
+        
     }
 }
+
