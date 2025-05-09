@@ -7,6 +7,7 @@
 
 import UIKit
 import DGCharts
+import Charts
 
 class SummaryViewController: UIViewController {
 
@@ -27,6 +28,17 @@ class SummaryViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
 
         setupLayout()
+
+        expensesViewModel.fetchExpenses()
+        incomeViewModel.fetchIncomes()
+
+        updateExpensesChart()
+        updateIncomeChart()
+        updateTotalChart()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
         expensesViewModel.fetchExpenses()
         incomeViewModel.fetchIncomes()
@@ -68,7 +80,7 @@ class SummaryViewController: UIViewController {
             chart.legend.enabled = true
             chart.holeRadiusPercent = 0.4
             chart.transparentCircleColor = .clear
-            chart.entryLabelColor = .black
+            chart.entryLabelColor = .clear
         }
     }
 
@@ -87,34 +99,80 @@ class SummaryViewController: UIViewController {
     }
 
     private func updateExpensesChart() {
-        let data = expensesViewModel.categoryTotals().map {
-            PieChartDataEntry(value: $0.value, label: $0.key)
+        let totals = expensesViewModel.categoryTotals()
+           
+        let categoryOrder = ["Fatura", "Kira", "Borç", "Gıda", "Ulaşım", "Eğlence"]
+        let categoryColors: [String: UIColor] = [
+            "Fatura": .systemBlue,
+            "Kira": .systemIndigo,
+            "Borç": .systemRed,
+            "Gıda": .systemGreen,
+            "Ulaşım": .systemOrange,
+            "Eğlence": .systemPurple,
+            "Diğer": .systemGray
+        ]
+           
+        var sortedEntries: [PieChartDataEntry] = []
+        var sortedColors: [UIColor] = []
+           
+        for category in categoryOrder {
+            if let amount = totals[category] {
+                sortedEntries.append(PieChartDataEntry(value: amount, label: category))
+                sortedColors.append(categoryColors[category] ?? .lightGray)
+            }
         }
-        let dataSet = PieChartDataSet(entries: data, label: "")
-        dataSet.colors = ChartColorTemplates.material()
-        expensesChartView.data = PieChartData(dataSet: dataSet)
+           
+        if let otherAmount = totals["Diğer"] {
+            sortedEntries.append(PieChartDataEntry(value: otherAmount, label: "Diğer"))
+            sortedColors.append(categoryColors["Diğer"] ?? .lightGray)
+        }
 
-        
-        let expenseTotal = expensesViewModel.categoryTotals().values.reduce(0, +)
+        let dataSet = PieChartDataSet(entries: sortedEntries, label: "")
+        dataSet.colors = sortedColors
+        dataSet.drawValuesEnabled = true
+           
+        let expenseTotal = totals.values.reduce(0, +)
         expensesChartView.holeColor = .clear
         expensesChartView.data = PieChartData(dataSet: dataSet)
-        expensesChartView.centerText = "\(expenseTotal) ₺"
-        
+        expensesChartView.centerText = "\(Int(expenseTotal)) ₺"
     }
 
     private func updateIncomeChart() {
-        let data = incomeViewModel.categoryTotals().map {
-            PieChartDataEntry(value: $0.value, label: $0.key)
-        }
-        let dataSet = PieChartDataSet(entries: data, label: "")
-        dataSet.colors = ChartColorTemplates.pastel()
-        incomeChartView.data = PieChartData(dataSet: dataSet)
+        let categoryOrder = ["Maaş", "Harçlık", "Yatırım", "Ek Gelir", "Satış"]
+        let categoryColors: [String: UIColor] = [
+            "Maaş": .systemTeal,
+            "Harçlık": .systemYellow,
+            "Yatırım": .systemGreen,
+            "Ek Gelir": .systemMint,
+            "Satış": .systemPink,
+            "Diğer": .systemGray
+        ]
         
-        let incomeTotal = incomeViewModel.categoryTotals().values.reduce(0, +)
+        let categoryData = incomeViewModel.categoryTotals()
+        
+        var entries: [PieChartDataEntry] = []
+        var colors: [UIColor] = []
+        
+        for category in categoryOrder {
+            if let amount = categoryData[category] {
+                entries.append(PieChartDataEntry(value: amount, label: category))
+                colors.append(categoryColors[category] ?? .lightGray)
+            }
+        }
+
+        if let otherAmount = categoryData["Diğer"] {
+            entries.append(PieChartDataEntry(value: otherAmount, label: "Diğer"))
+            colors.append(categoryColors["Diğer"] ?? .lightGray)
+        }
+
+        let dataSet = PieChartDataSet(entries: entries, label: "")
+        dataSet.colors = colors
+        dataSet.drawValuesEnabled = true
+
+        let incomeTotal = categoryData.values.reduce(0, +)
         incomeChartView.holeColor = .clear
         incomeChartView.data = PieChartData(dataSet: dataSet)
-        incomeChartView.centerText = "\(incomeTotal) ₺"
-        
+        incomeChartView.centerText = "\(Int(incomeTotal)) ₺"
     }
 
     private func updateTotalChart() {
@@ -133,7 +191,6 @@ class SummaryViewController: UIViewController {
         totalChartView.holeColor = .clear
         totalChartView.data = PieChartData(dataSet: dataSet)
         totalChartView.centerText = "\(emoji) \(difference) ₺"
-        
         
     }
 }

@@ -102,4 +102,17 @@ class ExpensesViewController: UIViewController, UITableViewDelegate, UITableView
         cell.textLabel?.text = "\(expense.title ?? "Gider") - \(expense.amount)₺ • \(formatter.string(from: expense.date ?? Date())) "
         return cell
     }
+    
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let expenseToDelete = viewModel.expenses[indexPath.row]
+            CoreDataManager.shared.deleteExpense(expenseToDelete)
+            viewModel.fetchExpenses()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+
+    
 }

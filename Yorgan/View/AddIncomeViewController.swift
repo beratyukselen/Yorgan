@@ -9,6 +9,10 @@ import UIKit
 
 class AddIncomeViewController: UIViewController {
     
+    private let categories = ["Maaş", "Harçlık", "Yatırım", "Ek Gelir", "Satış", "Diğer"]
+    private var selectedCategory: String?
+    private let categoryPicker = UIPickerView()
+    
     private let amountTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Tutar (₺)"
@@ -26,7 +30,7 @@ class AddIncomeViewController: UIViewController {
     
     private let categoryTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Kategori (örnek: Maaş)"
+        tf.placeholder = "Kategori Seç"
         tf.borderStyle = .roundedRect
         return tf
     }()
@@ -53,6 +57,11 @@ class AddIncomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Gelir Ekle"
+        
+        categoryPicker.delegate = self
+        categoryPicker.dataSource = self
+        categoryTextField.inputView = categoryPicker
+        
         setupLayout()
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
     }
@@ -91,9 +100,24 @@ class AddIncomeViewController: UIViewController {
         
         CoreDataManager.shared.saveIncome(title: title, amount: amount, date: datePicker.date, category: category)
         
-        // 🔔 Bildirim gönder
         NotificationCenter.default.post(name: NSNotification.Name("IncomeAdded"), object: nil)
         
         dismiss(animated: true)
     }
 }
+
+    extension AddIncomeViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+        func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
+        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+            return categories.count
+        }
+        func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+            return categories[row]
+        }
+        func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+            selectedCategory = categories[row]
+            categoryTextField.text = categories[row]
+            categoryTextField.resignFirstResponder()
+        }
+    }
+    

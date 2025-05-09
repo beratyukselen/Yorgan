@@ -48,6 +48,16 @@ class CoreDataManager {
         }
     }
     
+    func deleteIncome(_ income: Income) {
+        context.delete(income)
+        do {
+            try context.save()
+            print("🗑️ Gelir silindi.")
+        } catch {
+            print("❌ Gelir silinemedi: \(error.localizedDescription)")
+        }
+    }
+    
     func saveExpense(title: String, amount: Double, date: Date,category: String ) {
         let expense = Expense(context: context)
         expense.title = title
@@ -75,5 +85,15 @@ class CoreDataManager {
         }
     }
     
+    func deleteExpense(_ expense: Expense) {
+        context.delete(expense)
+        do {
+            try context.save()
+            print("🗑️ Gider silindi.")
+        } catch {
+            print("❌ Gider silinemedi: \(error.localizedDescription)")
+        }
+    }
+
     
 }

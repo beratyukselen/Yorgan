@@ -23,7 +23,6 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
         return button
     }()
     
-    // MARK: - ViewModel
     private let viewModel = IncomeViewModel()
 
     override func viewDidLoad() {
@@ -34,14 +33,12 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
         setupTableView()
         setupAddButton()
         
-        // ViewModel'den veri güncellemesi alındığında tabloyu yenile
         viewModel.onDataUpdated = { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
         }
 
-        // Bildirimle veri güncelle
         NotificationCenter.default.addObserver(self, selector: #selector(handleIncomeAdded), name: NSNotification.Name("IncomeAdded"), object: nil)
     }
     
@@ -112,4 +109,16 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.textLabel?.text = "\(income.title ?? "Gelir") - \(income.amount)₺ • \(formatter.string(from: income.date ?? Date()))"
         return cell
     }
+    
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let incomeToDelete = viewModel.incomes[indexPath.row]
+            CoreDataManager.shared.deleteIncome(incomeToDelete)
+            viewModel.fetchIncomes()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
 }
