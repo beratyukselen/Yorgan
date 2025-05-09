@@ -160,7 +160,6 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         }
     }
 
-    
     @objc private func handleSkip() {
         finishOnboarding()
     }
@@ -170,7 +169,6 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         navigationController?.pushViewController(loginVC, animated: true)
     }
 
-    
     private func goToRegisterScreen() {
         let registerVC = RegisterViewController()
         navigationController?.pushViewController(registerVC, animated: true)
@@ -211,7 +209,4 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
     }
 }
 
-#Preview {
-    OnboardingViewController()
-}
 

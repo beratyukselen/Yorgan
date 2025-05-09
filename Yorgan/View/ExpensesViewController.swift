@@ -113,6 +113,4 @@ class ExpensesViewController: UIViewController, UITableViewDelegate, UITableView
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
-
-    
 }

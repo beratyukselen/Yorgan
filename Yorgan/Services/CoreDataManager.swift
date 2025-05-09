@@ -94,6 +94,4 @@ class CoreDataManager {
             print("❌ Gider silinemedi: \(error.localizedDescription)")
         }
     }
-
-    
 }

@@ -72,6 +72,7 @@ class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
                 .kern: 8
             ]
         )
+        
         codeTextField.font = UIFont.monospacedDigitSystemFont(ofSize: 40, weight: .medium)
         codeTextField.textAlignment = .center
         codeTextField.keyboardType = .numberPad
@@ -167,7 +168,6 @@ class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-
     @objc private func resendCode() {
         resendButton.isEnabled = false
         resendButton.alpha = 0.5
@@ -208,7 +208,6 @@ class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
         homeVC.modalPresentationStyle = .fullScreen
         self.present(homeVC, animated: true)
     }
-
     
     private func showError(_ message: String) {
         let alert = UIAlertController(title: "Hata", message: message, preferredStyle: .alert)

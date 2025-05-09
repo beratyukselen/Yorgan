@@ -82,8 +82,6 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         addButton.addTarget(self, action: #selector(addIncomeTapped), for: .touchUpInside)
     }
-    
-    // MARK: - Actions
 
     @objc private func addIncomeTapped() {
         let vc = AddIncomeViewController()
@@ -94,8 +92,6 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc private func handleIncomeAdded() {
         viewModel.fetchIncomes()
     }
-
-    // MARK: - TableView
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfItems()
