@@ -23,6 +23,8 @@ class IncomesViewController: UIViewController, UITableViewDelegate, UITableViewD
         return button
     }()
     
+
+    
     private let viewModel = IncomeViewModel()
 
     override func viewDidLoad() {

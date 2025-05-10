@@ -130,6 +130,7 @@ class SummaryViewController: UIViewController {
         let dataSet = PieChartDataSet(entries: sortedEntries, label: "")
         dataSet.colors = sortedColors
         dataSet.drawValuesEnabled = true
+        expensesChartView.drawEntryLabelsEnabled = false
            
         let expenseTotal = totals.values.reduce(0, +)
         expensesChartView.holeColor = .clear
@@ -168,6 +169,7 @@ class SummaryViewController: UIViewController {
         let dataSet = PieChartDataSet(entries: entries, label: "")
         dataSet.colors = colors
         dataSet.drawValuesEnabled = true
+        incomeChartView.drawEntryLabelsEnabled = false
 
         let incomeTotal = categoryData.values.reduce(0, +)
         incomeChartView.holeColor = .clear
@@ -191,6 +193,7 @@ class SummaryViewController: UIViewController {
         totalChartView.holeColor = .clear
         totalChartView.data = PieChartData(dataSet: dataSet)
         totalChartView.centerText = "\(emoji) \(difference) ₺"
+        totalChartView.drawEntryLabelsEnabled = false
         
     }
 }
