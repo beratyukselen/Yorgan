@@ -19,13 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         // IntroViewController'ı başlatıyoruz
-        let onboardingVC = OnboardingViewController()
-        //let mainVC = MainTabBarController()
+        //let onboardingVC = OnboardingViewController()
+        let mainVC = MainTabBarController()
         
         
         // IntroViewController'ı bir navigation controller ile sarmalıyoruz
-        let navigationController = UINavigationController(rootViewController: onboardingVC)
-        //let navigationController = UINavigationController(rootViewController: mainVC)
+        //let navigationController = UINavigationController(rootViewController: onboardingVC)
+        let navigationController = UINavigationController(rootViewController: mainVC)
         
         // rootViewController olarak navigation controller'ı belirliyoruz
         window?.rootViewController = navigationController

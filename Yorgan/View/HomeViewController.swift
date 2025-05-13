@@ -4,40 +4,185 @@
 //  Created by Berat Yükselen on 10.04.2025.
 
 import UIKit
+import FirebaseFirestore
 
 class HomeViewController: UIViewController {
 
-    var username: String?
+    private let profileImageView = UIImageView()
+    private let greetingTitleLabel = UILabel()
+    private let greetingSubtitleLabel = UILabel()
+    private let balanceCard = UIView()
+    private let balanceTitleLabel = UILabel()
+    private let balanceValueLabel = UILabel()
+    private let lastTransactionsTitleLabel = UILabel()
+    private let transactionsTableView = UITableView()
+    private let seeAllButton = UIButton(type: .system)
 
-    private let welcomeLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 28)
-        label.textColor = UIColor.label
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let incomeViewModel = IncomeViewModel()
+    private let expenseViewModel = ExpensesViewModel()
+
+    private var allTransactions: [(title: String, amount: Double, isIncome: Bool, date: Date)] = []
+    private var showingAllTransactions = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.systemBackground
+        view.backgroundColor = .systemBackground
         setupUI()
+        setupBindings()
+        fetchUserAndData()
     }
 
     private func setupUI() {
-        view.addSubview(welcomeLabel)
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.image = UIImage(systemName: "person.circle.fill")
+        profileImageView.tintColor = .gray
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.clipsToBounds = true
+
+        greetingTitleLabel.font = .boldSystemFont(ofSize: 24)
+        greetingTitleLabel.textColor = .label
+
+        greetingSubtitleLabel.font = .systemFont(ofSize: 14)
+        greetingSubtitleLabel.textColor = .secondaryLabel
+
+        let greetingStack = UIStackView(arrangedSubviews: [greetingTitleLabel, greetingSubtitleLabel])
+        greetingStack.axis = .vertical
+        greetingStack.spacing = 4
+
+        let headerStack = UIStackView(arrangedSubviews: [profileImageView, greetingStack])
+        headerStack.axis = .horizontal
+        headerStack.spacing = 12
+        headerStack.alignment = .center
+        headerStack.translatesAutoresizingMaskIntoConstraints = false
+
+        balanceCard.backgroundColor = UIColor.systemBlue
+        balanceCard.layer.cornerRadius = 20
+        balanceCard.translatesAutoresizingMaskIntoConstraints = false
+
+        balanceTitleLabel.text = "Toplam Bakiye"
+        balanceTitleLabel.textColor = .white
+        balanceTitleLabel.font = .systemFont(ofSize: 16, weight: .medium)
+
+        balanceValueLabel.text = "0 ₺"
+        balanceValueLabel.textColor = .white
+        balanceValueLabel.font = .boldSystemFont(ofSize: 32)
+
+        let balanceStack = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
+        balanceStack.axis = .vertical
+        balanceStack.spacing = 8
+        balanceStack.translatesAutoresizingMaskIntoConstraints = false
+
+        balanceCard.addSubview(balanceStack)
 
         NSLayoutConstraint.activate([
-            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32)
+            balanceStack.topAnchor.constraint(equalTo: balanceCard.topAnchor, constant: 20),
+            balanceStack.leadingAnchor.constraint(equalTo: balanceCard.leadingAnchor, constant: 20),
+            balanceStack.trailingAnchor.constraint(equalTo: balanceCard.trailingAnchor, constant: -20),
+            balanceStack.bottomAnchor.constraint(equalTo: balanceCard.bottomAnchor, constant: -20)
         ])
 
-        if let name = username {
-            welcomeLabel.text = "Hoşgeldin, \(name)!"
-        } else {
-            welcomeLabel.text = "Hoşgeldin!"
+        lastTransactionsTitleLabel.text = "📋  Son İşlemler"
+        lastTransactionsTitleLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        lastTransactionsTitleLabel.textColor = .label
+
+        transactionsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        transactionsTableView.dataSource = self
+        transactionsTableView.translatesAutoresizingMaskIntoConstraints = false
+        transactionsTableView.isScrollEnabled = false
+        transactionsTableView.rowHeight = 44
+
+        seeAllButton.setTitle("Tüm İşlemleri Gör", for: .normal)
+        seeAllButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        seeAllButton.setTitleColor(.systemBlue, for: .normal)
+        seeAllButton.addTarget(self, action: #selector(toggleTransactions), for: .touchUpInside)
+
+        let stack = UIStackView(arrangedSubviews: [headerStack, balanceCard, lastTransactionsTitleLabel, transactionsTableView, seeAllButton])
+        stack.axis = .vertical
+        stack.spacing = 24
+        stack.alignment = .fill
+        stack.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(stack)
+
+        NSLayoutConstraint.activate([
+            profileImageView.widthAnchor.constraint(equalToConstant: 48),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+
+            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            transactionsTableView.heightAnchor.constraint(equalToConstant: 220)
+        ])
+    }
+
+    @objc private func toggleTransactions() {
+        showingAllTransactions.toggle()
+        transactionsTableView.reloadData()
+    }
+
+    private func setupBindings() {
+        incomeViewModel.onDataUpdated = { [weak self] in
+            self?.updateBalance()
+            self?.updateTransactions()
+        }
+
+        expenseViewModel.onDataUpdated = { [weak self] in
+            self?.updateBalance()
+            self?.updateTransactions()
+        }
+    }
+
+    private func fetchUserAndData() {
+        guard let email = UserDefaults.standard.string(forKey: "userEmail") else { return }
+
+        let db = Firestore.firestore()
+        db.collection("users").document(email).getDocument { snapshot, error in
+            if let data = snapshot?.data(), let name = data["name"] as? String {
+                DispatchQueue.main.async {
+                    self.greetingTitleLabel.text = name
+                    self.greetingSubtitleLabel.text = "Hoş Geldiniz"
+                }
+            }
+        }
+
+        incomeViewModel.fetchIncomes()
+        expenseViewModel.fetchExpenses()
+    }
+
+    private func updateBalance() {
+        let incomeTotal = incomeViewModel.totalAmount()
+        let expenseTotal = expenseViewModel.totalAmount()
+        let balance = incomeTotal - expenseTotal
+
+        DispatchQueue.main.async {
+            let formatted = String(format: "%.2f", balance)
+            self.balanceValueLabel.text = "\(balance < 0 ? "-" : "")\(formatted) ₺"
+        }
+    }
+
+    private func updateTransactions() {
+        let incomes = incomeViewModel.incomes.map { ($0.title ?? "Gelir", $0.amount, true, $0.date ?? Date()) }
+        let expenses = expenseViewModel.expenses.map { ($0.title ?? "Gider", $0.amount, false, $0.date ?? Date()) }
+        let merged = (incomes + expenses).sorted { $0.3 > $1.3 }
+
+        allTransactions = merged
+
+        DispatchQueue.main.async {
+            self.transactionsTableView.reloadData()
         }
     }
 }
 
+extension HomeViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return showingAllTransactions ? allTransactions.count : min(5, allTransactions.count)
+    }
 
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let item = allTransactions[indexPath.row]
+        cell.textLabel?.text = "\(item.title) - \(Int(item.amount)) ₺"
+        cell.textLabel?.textColor = item.isIncome ? .systemGreen : .systemRed
+        return cell
+    }
+}
