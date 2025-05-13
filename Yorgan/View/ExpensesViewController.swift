@@ -132,7 +132,9 @@ class ExpensesViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ExpenseCell")
+        tableView.register(TransactionCell.self, forCellReuseIdentifier: "TransactionCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 60
     }
 
     private func setupAddButton() {
@@ -212,11 +214,9 @@ extension ExpensesViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionCell
         let expense = viewModel.expense(at: indexPath.row)
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        cell.textLabel?.text = "\(expense.title ?? "Gider") - \(expense.amount)₺ • \(formatter.string(from: expense.date ?? Date()))"
+        cell.configure(title: expense.title ?? "Gider", amount: expense.amount, isIncome: false, date: expense.date ?? Date())
         return cell
     }
 

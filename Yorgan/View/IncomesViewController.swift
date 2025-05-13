@@ -7,8 +7,6 @@ import UIKit
 
 class IncomesViewController: UIViewController {
 
-    // MARK: - UI Components
-
     private let tableView = UITableView()
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -52,12 +50,8 @@ class IncomesViewController: UIViewController {
     private let topContainer = UIView()
     private let topStack = UIStackView()
 
-    // MARK: - ViewModel
-
     private let viewModel = IncomeViewModel()
     private var selectedMonth = Date()
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,8 +70,6 @@ class IncomesViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.fetchIncomes()
     }
-
-    // MARK: - Setup Methods
 
     private func setupTopBar() {
         view.addSubview(topContainer)
@@ -132,7 +124,9 @@ class IncomesViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "IncomeCell")
+        tableView.register(TransactionCell.self, forCellReuseIdentifier: "TransactionCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 60
     }
 
     private func setupAddButton() {
@@ -165,8 +159,6 @@ class IncomesViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    // MARK: - Actions
-
     @objc private func prevMonthTapped() {
         selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? Date()
         updateMonthLabel()
@@ -196,15 +188,11 @@ class IncomesViewController: UIViewController {
     }
 }
 
-// MARK: - UISearchBarDelegate
-
 extension IncomesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.filter(searchText: searchText, for: selectedMonth)
     }
 }
-
-// MARK: - UITableViewDataSource & Delegate
 
 extension IncomesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -212,11 +200,9 @@ extension IncomesViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IncomeCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionCell
         let income = viewModel.income(at: indexPath.row)
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        cell.textLabel?.text = "\(income.title ?? "Gelir") - \(income.amount)₺ • \(formatter.string(from: income.date ?? Date()))"
+        cell.configure(title: income.title ?? "Gelir", amount: income.amount, isIncome: true, date: income.date ?? Date())
         return cell
     }
 
@@ -229,4 +215,3 @@ extension IncomesViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
-
