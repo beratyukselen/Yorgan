@@ -63,6 +63,7 @@ class IncomesViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Gelirler"
+        navigationController?.setNavigationBarHidden(true, animated: false)
 
         setupTopBar()
         setupTableView()

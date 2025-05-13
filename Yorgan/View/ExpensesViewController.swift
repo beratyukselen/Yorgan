@@ -63,6 +63,7 @@ class ExpensesViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Giderler"
+        navigationController?.setNavigationBarHidden(true, animated: false)
 
         setupTopBar()
         setupTableView()

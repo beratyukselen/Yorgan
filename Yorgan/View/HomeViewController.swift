@@ -85,11 +85,11 @@ class HomeViewController: UIViewController {
         lastTransactionsTitleLabel.font = .systemFont(ofSize: 16, weight: .medium)
         lastTransactionsTitleLabel.textColor = .label
 
-        transactionsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        transactionsTableView.register(TransactionCell.self, forCellReuseIdentifier: "TransactionCell")
         transactionsTableView.dataSource = self
         transactionsTableView.translatesAutoresizingMaskIntoConstraints = false
         transactionsTableView.isScrollEnabled = false
-        transactionsTableView.rowHeight = 44
+        transactionsTableView.rowHeight = 60
 
         seeAllButton.setTitle("Tüm İşlemleri Gör", for: .normal)
         seeAllButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
@@ -111,7 +111,7 @@ class HomeViewController: UIViewController {
             stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            transactionsTableView.heightAnchor.constraint(equalToConstant: 220)
+            transactionsTableView.heightAnchor.constraint(equalToConstant: 300)
         ])
     }
 
@@ -179,10 +179,61 @@ extension HomeViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionCell
         let item = allTransactions[indexPath.row]
-        cell.textLabel?.text = "\(item.title) - \(Int(item.amount)) ₺"
-        cell.textLabel?.textColor = item.isIncome ? .systemGreen : .systemRed
+        cell.configure(title: item.title, amount: item.amount, isIncome: item.isIncome, date: item.date)
         return cell
+    }
+}
+
+class TransactionCell: UITableViewCell {
+    private let titleLabel = UILabel()
+    private let amountLabel = UILabel()
+    private let dateLabel = UILabel()
+    private let stack = UIStackView()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupUI() {
+        titleLabel.font = .systemFont(ofSize: 15, weight: .regular)
+        dateLabel.font = .systemFont(ofSize: 12, weight: .light)
+        dateLabel.textColor = .secondaryLabel
+        amountLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        amountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        amountLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        stack.axis = .vertical
+        stack.spacing = 4
+        stack.translatesAutoresizingMaskIntoConstraints = false
+
+        stack.addArrangedSubview(titleLabel)
+        stack.addArrangedSubview(dateLabel)
+
+        contentView.addSubview(stack)
+        contentView.addSubview(amountLabel)
+
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            stack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            amountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            amountLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+    }
+
+    func configure(title: String, amount: Double, isIncome: Bool, date: Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        titleLabel.text = title
+        dateLabel.text = formatter.string(from: date)
+        amountLabel.text = String(format: "%.2f ₺", amount)
+        amountLabel.textColor = isIncome ? .systemGreen : .systemRed
     }
 }

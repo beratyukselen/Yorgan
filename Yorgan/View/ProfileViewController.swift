@@ -41,6 +41,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Profil"
+        navigationController?.setNavigationBarHidden(true, animated: false)
 
         setupScrollView()
         setupUserInfoCard()
