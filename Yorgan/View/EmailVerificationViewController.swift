@@ -152,12 +152,14 @@ class EmailVerificationViewController: UIViewController, UITextFieldDelegate {
                     if let name = self.userName, let surname = self.userSurname {
                         AuthService.shared.registerNewUser(name: name, surname: surname, email: self.userEmail) { success in
                             if success {
+                                UserDefaults.standard.set(self.userEmail, forKey: "userEmail")
                                 self.goToHome()
                             } else {
                                 self.showError("Kullanıcı kaydedilemedi.")
                             }
                         }
                     } else {
+                        UserDefaults.standard.set(self.userEmail, forKey: "userEmail")
                         self.goToHome()
                     }
 

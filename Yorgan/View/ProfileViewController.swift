@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class ProfileViewController: UIViewController {
 
@@ -44,10 +45,7 @@ class ProfileViewController: UIViewController {
         setupVersionInfo()
         setupDataSection()
 
-        // Örnek veriler
-        nameLabel.text = "Berat"
-        surnameLabel.text = "Yükselen"
-        emailLabel.text = "berat@example.com"
+        fetchUserData()
     }
 
     private func setupScrollView() {
@@ -151,17 +149,53 @@ class ProfileViewController: UIViewController {
         ])
     }
 
+    // MARK: - Firebase'den Kullanıcı Verisini Çekme
+    private func fetchUserData() {
+        guard let email = UserDefaults.standard.string(forKey: "userEmail") else {
+            print("KAYITLI EMAIL YOK")
+            return
+        }
+
+        print("📧 Doküman ID ile veri çekiliyor: \(email)")
+        
+        let db = Firestore.firestore()
+        db.collection("users").document(email).getDocument { snapshot, error in
+            if let error = error {
+                print("❌ Firestore Hatası: \(error.localizedDescription)")
+                return
+            }
+
+            guard let data = snapshot?.data() else {
+                print("⚠️ Veri bulunamadı.")
+                return
+            }
+
+            print("✅ Kullanıcı bulundu: \(data)")
+            self.nameLabel.text = data["name"] as? String ?? "-"
+            self.surnameLabel.text = data["surname"] as? String ?? "-"
+            self.emailLabel.text = data["email"] as? String ?? "-"
+        }
+    }
+
+
+
     // MARK: - Actions
     @objc private func rateAppTapped() {
-        print("App Store'a yönlendirme")
+        if let url = URL(string: "itms-apps://itunes.apple.com/app/idYOUR_APP_ID") {
+            UIApplication.shared.open(url)
+        }
     }
 
     @objc private func contactDevTapped() {
-        print("Mail uygulamasını aç")
+        if let url = URL(string: "mailto:berat@example.com") {
+            UIApplication.shared.open(url)
+        }
     }
 
     @objc private func privacyPolicyTapped() {
-        print("Gizlilik sözleşmesi sayfası")
+        if let url = URL(string: "https://yourapp.com/privacy") {
+            UIApplication.shared.open(url)
+        }
     }
 
     @objc private func backupTapped() {
