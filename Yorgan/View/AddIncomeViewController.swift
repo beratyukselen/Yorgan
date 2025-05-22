@@ -97,11 +97,13 @@ class AddIncomeViewController: UIViewController {
             present(alert, animated: true)
             return
         }
-        
-        CoreDataManager.shared.saveIncome(title: title, amount: amount, date: datePicker.date, category: category)
-        
+
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+
+        CoreDataManager.shared.saveIncome(title: title, amount: amount, date: datePicker.date, category: category, userEmail: userEmail)
+
         NotificationCenter.default.post(name: NSNotification.Name("IncomeAdded"), object: nil)
-        
+
         dismiss(animated: true)
     }
 }

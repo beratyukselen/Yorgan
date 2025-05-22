@@ -16,7 +16,8 @@ class IncomeViewModel {
     var onDataUpdated: (() -> Void)?
 
     func fetchIncomes() {
-        allIncomes = CoreDataManager.shared.fetchIncomes()
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+        allIncomes = CoreDataManager.shared.fetchIncomes(for: userEmail)
         incomes = allIncomes
         onDataUpdated?()
     }
@@ -40,7 +41,8 @@ class IncomeViewModel {
     }
 
     func addIncome(title: String, amount: Double, date: Date, category: String) {
-        CoreDataManager.shared.saveIncome(title: title, amount: amount, date: date, category: category)
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+        CoreDataManager.shared.saveIncome(title: title, amount: amount, date: date, category: category, userEmail: userEmail)
         fetchIncomes()
     }
 
@@ -57,4 +59,3 @@ class IncomeViewModel {
         return incomes.reduce(0) { $0 + $1.amount }
     }
 }
-

@@ -72,9 +72,9 @@ class SummaryViewController: UIViewController {
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
 
+        addChartSection(title: "Gelir vs Gider", chart: totalChartView)
         addChartSection(title: "Gider Dağılımı", chart: expensesChartView)
         addChartSection(title: "Gelir Dağılımı", chart: incomeChartView)
-        addChartSection(title: "Gelir vs Gider", chart: totalChartView)
 
         [expensesChartView, incomeChartView, totalChartView].forEach { chart in
             chart.legend.enabled = true
@@ -129,7 +129,7 @@ class SummaryViewController: UIViewController {
 
         let dataSet = PieChartDataSet(entries: sortedEntries, label: "")
         dataSet.colors = sortedColors
-        dataSet.drawValuesEnabled = true
+        dataSet.drawValuesEnabled = false
         expensesChartView.drawEntryLabelsEnabled = false
            
         let expenseTotal = totals.values.reduce(0, +)
@@ -168,7 +168,7 @@ class SummaryViewController: UIViewController {
 
         let dataSet = PieChartDataSet(entries: entries, label: "")
         dataSet.colors = colors
-        dataSet.drawValuesEnabled = true
+        dataSet.drawValuesEnabled = false
         incomeChartView.drawEntryLabelsEnabled = false
 
         let incomeTotal = categoryData.values.reduce(0, +)
@@ -189,6 +189,7 @@ class SummaryViewController: UIViewController {
         ]
         let dataSet = PieChartDataSet(entries: entries, label: "")
         dataSet.colors = [UIColor.systemGreen, UIColor.systemRed]
+        dataSet.drawValuesEnabled = false
         
         totalChartView.holeColor = .clear
         totalChartView.data = PieChartData(dataSet: dataSet)

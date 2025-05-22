@@ -222,7 +222,7 @@ extension ExpensesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let expenseToDelete = viewModel.expenses[indexPath.row]
+            let expenseToDelete = viewModel.expense(at: indexPath.row)
             CoreDataManager.shared.deleteExpense(expenseToDelete)
             viewModel.fetchExpenses()
             tableView.deleteRows(at: [indexPath], with: .automatic)

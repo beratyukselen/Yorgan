@@ -208,7 +208,7 @@ extension IncomesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let incomeToDelete = viewModel.incomes[indexPath.row]
+            let incomeToDelete = viewModel.income(at: indexPath.row)
             CoreDataManager.shared.deleteIncome(incomeToDelete)
             viewModel.fetchIncomes()
             tableView.deleteRows(at: [indexPath], with: .automatic)

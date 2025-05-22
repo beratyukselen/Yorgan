@@ -98,10 +98,17 @@ class AddExpensesViewController: UIViewController {
             return
         }
         
-        CoreDataManager.shared.saveExpense(title: title, amount: amount, date: datePicker.date, category: category)
-        
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+
+        CoreDataManager.shared.saveExpense(
+            title: title,
+            amount: amount,
+            date: datePicker.date,
+            category: category,
+            userEmail: userEmail
+        )
+
         NotificationCenter.default.post(name: NSNotification.Name("ExpenseAdded"), object: nil)
-        
         dismiss(animated: true)
     }
 }

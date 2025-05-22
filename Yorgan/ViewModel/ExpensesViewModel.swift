@@ -10,13 +10,16 @@ class ExpensesViewModel {
 
     // MARK: - Properties
 
+    private var allExpenses: [Expense] = []
     private(set) var expenses: [Expense] = []
     var onDataUpdated: (() -> Void)?
 
     // MARK: - Data Methods
 
     func fetchExpenses() {
-        expenses = CoreDataManager.shared.fetchExpenses()
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+        allExpenses = CoreDataManager.shared.fetchExpenses(for: userEmail)
+        expenses = allExpenses
         onDataUpdated?()
     }
 
@@ -29,7 +32,8 @@ class ExpensesViewModel {
     }
 
     func addExpense(title: String, amount: Double, date: Date, category: String) {
-        CoreDataManager.shared.saveExpense(title: title, amount: amount, date: date, category: category)
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+        CoreDataManager.shared.saveExpense(title: title, amount: amount, date: date, category: category, userEmail: userEmail)
         fetchExpenses()
     }
 
@@ -49,7 +53,6 @@ class ExpensesViewModel {
     // MARK: - Filter Method
 
     func filter(searchText: String, for month: Date) {
-        let allExpenses = CoreDataManager.shared.fetchExpenses()
         let calendar = Calendar.current
 
         expenses = allExpenses.filter { expense in
@@ -63,4 +66,3 @@ class ExpensesViewModel {
         onDataUpdated?()
     }
 }
-

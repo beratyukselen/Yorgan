@@ -31,6 +31,15 @@ class HomeViewController: UIViewController {
         setupBindings()
         fetchUserAndData()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        expenseViewModel.fetchExpenses()
+        incomeViewModel.fetchIncomes()
+        updateBalance()
+        updateTransactions()
+    }
 
     private func setupUI() {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -133,7 +142,7 @@ class HomeViewController: UIViewController {
     }
 
     private func fetchUserAndData() {
-        guard let email = UserDefaults.standard.string(forKey: "userEmail") else { return }
+        guard let email = UserDefaults.standard.string(forKey: "currentUserEmail") else { return }
 
         let db = Firestore.firestore()
         db.collection("users").document(email).getDocument { snapshot, error in
@@ -156,7 +165,7 @@ class HomeViewController: UIViewController {
 
         DispatchQueue.main.async {
             let formatted = String(format: "%.2f", balance)
-            self.balanceValueLabel.text = "\(balance < 0 ? "-" : "")\(formatted) ₺"
+            self.balanceValueLabel.text = "\(balance < 0 ? "" : "")\(formatted) ₺"
         }
     }
 

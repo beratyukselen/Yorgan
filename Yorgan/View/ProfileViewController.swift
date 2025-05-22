@@ -166,7 +166,7 @@ class ProfileViewController: UIViewController {
     }
 
     private func fetchUserData() {
-        guard let email = UserDefaults.standard.string(forKey: "userEmail") else {
+        guard let email = UserDefaults.standard.string(forKey: "currentUserEmail") else {
             print("KAYITLI EMAIL YOK")
             return
         }
@@ -224,7 +224,7 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func logoutTapped() {
-        UserDefaults.standard.removeObject(forKey: "userEmail")
+        UserDefaults.standard.removeObject(forKey: "currentUserEmail")
 
         let onboardingVC = OnboardingViewController()
         let nav = UINavigationController(rootViewController: onboardingVC)

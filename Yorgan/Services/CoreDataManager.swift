@@ -21,13 +21,14 @@ class CoreDataManager {
         self.context = appDelegate.persistentContainer.viewContext
     }
 
-    func saveIncome(title: String, amount: Double, date: Date, category: String) {
+    func saveIncome(title: String, amount: Double, date: Date, category: String, userEmail: String) {
         let income = Income(context: context)
         income.title = title
         income.amount = amount
         income.date = date
         income.category = category
-        
+        income.userEmail = userEmail  // ✅ eklendi
+
         do {
             try context.save()
             print("✅ Gelir başarıyla kaydedildi.")
@@ -36,10 +37,11 @@ class CoreDataManager {
         }
     }
 
-    func fetchIncomes() -> [Income] {
+    func fetchIncomes(for userEmail: String) -> [Income] {
         let request: NSFetchRequest<Income> = Income.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        
+        request.predicate = NSPredicate(format: "userEmail == %@", userEmail)  // ✅ filtre
+
         do {
             return try context.fetch(request)
         } catch {
@@ -58,13 +60,14 @@ class CoreDataManager {
         }
     }
     
-    func saveExpense(title: String, amount: Double, date: Date,category: String ) {
+    func saveExpense(title: String, amount: Double, date: Date, category: String, userEmail: String) {
         let expense = Expense(context: context)
         expense.title = title
         expense.amount = amount
         expense.date = date
         expense.category = category
-        
+        expense.userEmail = userEmail  // ✅ burası
+
         do {
             try context.save()
             print("✅ Gider başarıyla kaydedildi.")
@@ -73,14 +76,15 @@ class CoreDataManager {
         }
     }
     
-    func fetchExpenses() -> [Expense] {
+    func fetchExpenses(for userEmail: String) -> [Expense] {
         let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        
+        request.predicate = NSPredicate(format: "userEmail == %@", userEmail)  // ✅ filtre
+
         do {
             return try context.fetch(request)
         } catch {
-            print(" Giderler çekilemedi: \(error.localizedDescription)")
+            print("❌ Giderler çekilemedi: \(error.localizedDescription)")
             return []
         }
     }
