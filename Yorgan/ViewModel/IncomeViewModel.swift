@@ -22,6 +22,20 @@ class IncomeViewModel {
         onDataUpdated?()
     }
 
+    func fetchIncomes(for date: Date) {
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+        allIncomes = CoreDataManager.shared.fetchIncomes(for: userEmail)
+
+        let calendar = Calendar.current
+        incomes = allIncomes.filter { income in
+            guard let incomeDate = income.date else { return false }
+            return calendar.isDate(incomeDate, equalTo: date, toGranularity: .month) &&
+                   calendar.isDate(incomeDate, equalTo: date, toGranularity: .year)
+        }
+
+        onDataUpdated?()
+    }
+
     func filter(searchText: String, for month: Date) {
         incomes = allIncomes.filter { income in
             let titleMatches = searchText.isEmpty || (income.title?.lowercased().contains(searchText.lowercased()) ?? false)
@@ -45,6 +59,14 @@ class IncomeViewModel {
         CoreDataManager.shared.saveIncome(title: title, amount: amount, date: date, category: category, userEmail: userEmail)
         fetchIncomes()
     }
+    
+    func removeIncome(at index: Int) {
+        let income = incomes[index]
+        CoreDataManager.shared.deleteIncome(income)
+        incomes.remove(at: index)
+        allIncomes.removeAll { $0.objectID == income.objectID }
+        onDataUpdated?()
+    }
 
     func categoryTotals() -> [String: Double] {
         var totals: [String: Double] = [:]
@@ -52,6 +74,23 @@ class IncomeViewModel {
             let category = income.category ?? "Diğer"
             totals[category, default: 0.0] += income.amount
         }
+        return totals
+    }
+
+    func categoryTotals(for date: Date) -> [String: Double] {
+        let calendar = Calendar.current
+        let filtered = allIncomes.filter { income in
+            guard let incomeDate = income.date else { return false }
+            return calendar.isDate(incomeDate, equalTo: date, toGranularity: .month) &&
+                   calendar.isDate(incomeDate, equalTo: date, toGranularity: .year)
+        }
+
+        var totals: [String: Double] = [:]
+        for income in filtered {
+            let category = income.category ?? "Diğer"
+            totals[category, default: 0.0] += income.amount
+        }
+
         return totals
     }
 

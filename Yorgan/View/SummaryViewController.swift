@@ -21,6 +21,11 @@ class SummaryViewController: UIViewController {
     private let expensesViewModel = ExpensesViewModel()
     private let incomeViewModel = IncomeViewModel()
 
+    private var selectedMonth = Date()
+    private let monthLabel = UILabel()
+    private let previousMonthButton = UIButton(type: .system)
+    private let nextMonthButton = UIButton(type: .system)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -28,24 +33,12 @@ class SummaryViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
 
         setupLayout()
-
-        expensesViewModel.fetchExpenses()
-        incomeViewModel.fetchIncomes()
-
-        updateExpensesChart()
-        updateIncomeChart()
-        updateTotalChart()
+        reloadCharts()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        expensesViewModel.fetchExpenses()
-        incomeViewModel.fetchIncomes()
-
-        updateExpensesChart()
-        updateIncomeChart()
-        updateTotalChart()
+        reloadCharts()
     }
 
     private func setupLayout() {
@@ -72,6 +65,19 @@ class SummaryViewController: UIViewController {
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
 
+        previousMonthButton.setTitle("◀", for: .normal)
+        nextMonthButton.setTitle("▶", for: .normal)
+        previousMonthButton.addTarget(self, action: #selector(didTapPreviousMonth), for: .touchUpInside)
+        nextMonthButton.addTarget(self, action: #selector(didTapNextMonth), for: .touchUpInside)
+
+        let monthStack = UIStackView(arrangedSubviews: [previousMonthButton, monthLabel, nextMonthButton])
+        monthStack.axis = .horizontal
+        monthStack.alignment = .center
+        monthStack.distribution = .equalCentering
+        monthStack.spacing = 12
+        stackView.addArrangedSubview(monthStack)
+        updateMonthLabel()
+
         addChartSection(title: "Gelir vs Gider", chart: totalChartView)
         addChartSection(title: "Gider Dağılımı", chart: expensesChartView)
         addChartSection(title: "Gelir Dağılımı", chart: incomeChartView)
@@ -82,6 +88,33 @@ class SummaryViewController: UIViewController {
             chart.transparentCircleColor = .clear
             chart.entryLabelColor = .clear
         }
+    }
+
+    private func updateMonthLabel() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        monthLabel.text = formatter.string(from: selectedMonth)
+        monthLabel.font = .boldSystemFont(ofSize: 16)
+    }
+
+    @objc private func didTapPreviousMonth() {
+        selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? Date()
+        updateMonthLabel()
+        reloadCharts()
+    }
+
+    @objc private func didTapNextMonth() {
+        selectedMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? Date()
+        updateMonthLabel()
+        reloadCharts()
+    }
+
+    private func reloadCharts() {
+        expensesViewModel.fetchExpenses(for: selectedMonth)
+        incomeViewModel.fetchIncomes(for: selectedMonth)
+        updateExpensesChart()
+        updateIncomeChart()
+        updateTotalChart()
     }
 
     private func addChartSection(title: String, chart: PieChartView) {
@@ -99,8 +132,8 @@ class SummaryViewController: UIViewController {
     }
 
     private func updateExpensesChart() {
-        let totals = expensesViewModel.categoryTotals()
-           
+        let totals = expensesViewModel.categoryTotals(for: selectedMonth)
+
         let categoryOrder = ["Fatura", "Kira", "Borç", "Gıda", "Ulaşım", "Eğlence"]
         let categoryColors: [String: UIColor] = [
             "Fatura": .systemBlue,
@@ -111,17 +144,17 @@ class SummaryViewController: UIViewController {
             "Eğlence": .systemPurple,
             "Diğer": .systemGray
         ]
-           
+
         var sortedEntries: [PieChartDataEntry] = []
         var sortedColors: [UIColor] = []
-           
+
         for category in categoryOrder {
             if let amount = totals[category] {
                 sortedEntries.append(PieChartDataEntry(value: amount, label: category))
                 sortedColors.append(categoryColors[category] ?? .lightGray)
             }
         }
-           
+
         if let otherAmount = totals["Diğer"] {
             sortedEntries.append(PieChartDataEntry(value: otherAmount, label: "Diğer"))
             sortedColors.append(categoryColors["Diğer"] ?? .lightGray)
@@ -131,7 +164,7 @@ class SummaryViewController: UIViewController {
         dataSet.colors = sortedColors
         dataSet.drawValuesEnabled = false
         expensesChartView.drawEntryLabelsEnabled = false
-           
+
         let expenseTotal = totals.values.reduce(0, +)
         expensesChartView.holeColor = .clear
         expensesChartView.data = PieChartData(dataSet: dataSet)
@@ -148,12 +181,12 @@ class SummaryViewController: UIViewController {
             "Satış": .systemPink,
             "Diğer": .systemGray
         ]
-        
-        let categoryData = incomeViewModel.categoryTotals()
-        
+
+        let categoryData = incomeViewModel.categoryTotals(for: selectedMonth)
+
         var entries: [PieChartDataEntry] = []
         var colors: [UIColor] = []
-        
+
         for category in categoryOrder {
             if let amount = categoryData[category] {
                 entries.append(PieChartDataEntry(value: amount, label: category))
@@ -178,8 +211,8 @@ class SummaryViewController: UIViewController {
     }
 
     private func updateTotalChart() {
-        let incomeTotal = incomeViewModel.categoryTotals().values.reduce(0, +)
-        let expenseTotal = expensesViewModel.categoryTotals().values.reduce(0, +)
+        let incomeTotal = incomeViewModel.categoryTotals(for: selectedMonth).values.reduce(0, +)
+        let expenseTotal = expensesViewModel.categoryTotals(for: selectedMonth).values.reduce(0, +)
         let difference = incomeTotal - expenseTotal
         let emoji = difference >= 0 ? "🟢" : "🔴"
 
@@ -190,12 +223,10 @@ class SummaryViewController: UIViewController {
         let dataSet = PieChartDataSet(entries: entries, label: "")
         dataSet.colors = [UIColor.systemGreen, UIColor.systemRed]
         dataSet.drawValuesEnabled = false
-        
+
         totalChartView.holeColor = .clear
         totalChartView.data = PieChartData(dataSet: dataSet)
         totalChartView.centerText = "\(emoji) \(difference) ₺"
         totalChartView.drawEntryLabelsEnabled = false
-        
     }
 }
-

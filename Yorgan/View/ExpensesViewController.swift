@@ -75,6 +75,7 @@ class ExpensesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchExpenses()
+        viewModel.filter(searchText: searchBar.text ?? "", for: selectedMonth)
     }
 
     // MARK: - Setup Methods

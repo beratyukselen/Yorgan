@@ -69,6 +69,7 @@ class IncomesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchIncomes()
+        viewModel.filter(searchText: searchBar.text ?? "", for: selectedMonth)
     }
 
     private func setupTopBar() {

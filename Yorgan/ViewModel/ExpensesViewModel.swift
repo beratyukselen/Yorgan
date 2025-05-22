@@ -1,7 +1,9 @@
+//
 //  ExpensesViewModel.swift
 //  Yorgan
 //
 //  Created by Berat Yükselen on 5.05.2025.
+//
 
 import Foundation
 import CoreData
@@ -20,6 +22,20 @@ class ExpensesViewModel {
         let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
         allExpenses = CoreDataManager.shared.fetchExpenses(for: userEmail)
         expenses = allExpenses
+        onDataUpdated?()
+    }
+
+    func fetchExpenses(for date: Date) {
+        let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
+        allExpenses = CoreDataManager.shared.fetchExpenses(for: userEmail)
+
+        let calendar = Calendar.current
+        expenses = allExpenses.filter { expense in
+            guard let expenseDate = expense.date else { return false }
+            return calendar.isDate(expenseDate, equalTo: date, toGranularity: .month) &&
+                   calendar.isDate(expenseDate, equalTo: date, toGranularity: .year)
+        }
+
         onDataUpdated?()
     }
 
@@ -43,6 +59,23 @@ class ExpensesViewModel {
             let key = expense.category ?? "Bilinmiyor"
             totals[key, default: 0.0] += expense.amount
         }
+        return totals
+    }
+
+    func categoryTotals(for date: Date) -> [String: Double] {
+        let calendar = Calendar.current
+        let filtered = allExpenses.filter { expense in
+            guard let expenseDate = expense.date else { return false }
+            return calendar.isDate(expenseDate, equalTo: date, toGranularity: .month) &&
+                   calendar.isDate(expenseDate, equalTo: date, toGranularity: .year)
+        }
+
+        var totals: [String: Double] = [:]
+        for expense in filtered {
+            let key = expense.category ?? "Bilinmiyor"
+            totals[key, default: 0.0] += expense.amount
+        }
+
         return totals
     }
 

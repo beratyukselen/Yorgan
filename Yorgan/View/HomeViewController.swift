@@ -24,21 +24,23 @@ class HomeViewController: UIViewController {
     private var allTransactions: [(title: String, amount: Double, isIncome: Bool, date: Date)] = []
     private var showingAllTransactions = false
 
+    private var selectedMonth = Date()
+    private let monthLabel = UILabel()
+    private let previousMonthButton = UIButton(type: .system)
+    private let nextMonthButton = UIButton(type: .system)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        navigationController?.setNavigationBarHidden(true, animated: false)
         setupUI()
         setupBindings()
         fetchUserAndData()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        expenseViewModel.fetchExpenses()
-        incomeViewModel.fetchIncomes()
-        updateBalance()
-        updateTransactions()
+        updateFilteredContent()
     }
 
     private func setupUI() {
@@ -63,6 +65,21 @@ class HomeViewController: UIViewController {
         headerStack.spacing = 12
         headerStack.alignment = .center
         headerStack.translatesAutoresizingMaskIntoConstraints = false
+
+        previousMonthButton.setTitle("◀", for: .normal)
+        nextMonthButton.setTitle("▶", for: .normal)
+        previousMonthButton.addTarget(self, action: #selector(didTapPreviousMonth), for: .touchUpInside)
+        nextMonthButton.addTarget(self, action: #selector(didTapNextMonth), for: .touchUpInside)
+
+        monthLabel.textAlignment = .center
+        monthLabel.font = .boldSystemFont(ofSize: 16)
+        updateMonthLabel()
+
+        let monthStack = UIStackView(arrangedSubviews: [previousMonthButton, monthLabel, nextMonthButton])
+        monthStack.axis = .horizontal
+        monthStack.spacing = 12
+        monthStack.alignment = .center
+        monthStack.distribution = .equalCentering
 
         balanceCard.backgroundColor = UIColor.systemBlue
         balanceCard.layer.cornerRadius = 20
@@ -105,7 +122,7 @@ class HomeViewController: UIViewController {
         seeAllButton.setTitleColor(.systemBlue, for: .normal)
         seeAllButton.addTarget(self, action: #selector(toggleTransactions), for: .touchUpInside)
 
-        let stack = UIStackView(arrangedSubviews: [headerStack, balanceCard, lastTransactionsTitleLabel, transactionsTableView, seeAllButton])
+        let stack = UIStackView(arrangedSubviews: [headerStack, monthStack, balanceCard, lastTransactionsTitleLabel, transactionsTableView, seeAllButton])
         stack.axis = .vertical
         stack.spacing = 24
         stack.alignment = .fill
@@ -127,6 +144,24 @@ class HomeViewController: UIViewController {
     @objc private func toggleTransactions() {
         showingAllTransactions.toggle()
         transactionsTableView.reloadData()
+    }
+
+    @objc private func didTapPreviousMonth() {
+        selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? Date()
+        updateMonthLabel()
+        updateFilteredContent()
+    }
+
+    @objc private func didTapNextMonth() {
+        selectedMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? Date()
+        updateMonthLabel()
+        updateFilteredContent()
+    }
+
+    private func updateMonthLabel() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        monthLabel.text = formatter.string(from: selectedMonth)
     }
 
     private func setupBindings() {
@@ -154,8 +189,12 @@ class HomeViewController: UIViewController {
             }
         }
 
-        incomeViewModel.fetchIncomes()
-        expenseViewModel.fetchExpenses()
+        updateFilteredContent()
+    }
+
+    private func updateFilteredContent() {
+        incomeViewModel.fetchIncomes(for: selectedMonth)
+        expenseViewModel.fetchExpenses(for: selectedMonth)
     }
 
     private func updateBalance() {
