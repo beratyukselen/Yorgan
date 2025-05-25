@@ -225,8 +225,8 @@ extension ExpensesViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             let expenseToDelete = viewModel.expense(at: indexPath.row)
             CoreDataManager.shared.deleteExpense(expenseToDelete)
-            viewModel.fetchExpenses()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            viewModel.fetchExpenses(for: selectedMonth)
+            tableView.reloadData()
         }
     }
 }

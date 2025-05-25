@@ -211,8 +211,8 @@ extension IncomesViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             let incomeToDelete = viewModel.income(at: indexPath.row)
             CoreDataManager.shared.deleteIncome(incomeToDelete)
-            viewModel.fetchIncomes()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            viewModel.fetchIncomes(for: selectedMonth)
+            tableView.reloadData()
         }
     }
 }
