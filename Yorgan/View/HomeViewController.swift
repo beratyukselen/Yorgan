@@ -114,7 +114,7 @@ class HomeViewController: UIViewController {
         transactionsTableView.register(TransactionCell.self, forCellReuseIdentifier: "TransactionCell")
         transactionsTableView.dataSource = self
         transactionsTableView.translatesAutoresizingMaskIntoConstraints = false
-        transactionsTableView.isScrollEnabled = false
+        transactionsTableView.isScrollEnabled = true
         transactionsTableView.rowHeight = 60
 
         seeAllButton.setTitle("Tüm İşlemleri Gör", for: .normal)
@@ -137,13 +137,14 @@ class HomeViewController: UIViewController {
             stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            transactionsTableView.heightAnchor.constraint(equalToConstant: 300)
+            stack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
 
     @objc private func toggleTransactions() {
         showingAllTransactions.toggle()
-        updateTransactions()
+        transactionsTableView.reloadData()
+        seeAllButton.isHidden = showingAllTransactions || allTransactions.count <= 5
     }
 
     @objc private func didTapPreviousMonth() {

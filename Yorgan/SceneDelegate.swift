@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        // Uygulama arka plandan ön planda geçerken yapılacak işlemler
+        // Uygulama arka plandan ön plana geçerken yapılacak işlemler
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

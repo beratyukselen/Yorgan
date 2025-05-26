@@ -10,13 +10,9 @@ import CoreData
 
 class ExpensesViewModel {
 
-    // MARK: - Properties
-
     private var allExpenses: [Expense] = []
     private(set) var expenses: [Expense] = []
     var onDataUpdated: (() -> Void)?
-
-    // MARK: - Data Methods
 
     func fetchExpenses(completion: (() -> Void)? = nil) {
         let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
@@ -91,8 +87,6 @@ class ExpensesViewModel {
     func totalAmount() -> Double {
         return expenses.reduce(0) { $0 + $1.amount }
     }
-
-    // MARK: - Filter Method
 
     func filter(searchText: String, for month: Date) {
         let calendar = Calendar.current
