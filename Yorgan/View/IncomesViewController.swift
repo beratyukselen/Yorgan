@@ -179,7 +179,9 @@ class IncomesViewController: UIViewController {
     }
 
     @objc private func handleIncomeAdded() {
-        viewModel.fetchIncomes()
+        viewModel.fetchIncomes {
+            self.viewModel.filter(searchText: self.searchBar.text ?? "", for: self.selectedMonth)
+        }
     }
 
     private func updateMonthLabel() {

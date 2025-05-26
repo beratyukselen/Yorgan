@@ -15,11 +15,12 @@ class IncomeViewModel {
 
     var onDataUpdated: (() -> Void)?
 
-    func fetchIncomes() {
+    func fetchIncomes(completion: (() -> Void)? = nil) {
         let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
         allIncomes = CoreDataManager.shared.fetchIncomes(for: userEmail)
         incomes = allIncomes
         onDataUpdated?()
+        completion?()
     }
 
     func fetchIncomes(for date: Date) {

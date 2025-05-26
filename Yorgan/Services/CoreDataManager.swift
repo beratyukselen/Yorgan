@@ -27,7 +27,7 @@ class CoreDataManager {
         income.amount = amount
         income.date = date
         income.category = category
-        income.userEmail = userEmail  // ✅ eklendi
+        income.userEmail = userEmail
 
         do {
             try context.save()
@@ -40,7 +40,7 @@ class CoreDataManager {
     func fetchIncomes(for userEmail: String) -> [Income] {
         let request: NSFetchRequest<Income> = Income.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        request.predicate = NSPredicate(format: "userEmail == %@", userEmail)  // ✅ filtre
+        request.predicate = NSPredicate(format: "userEmail == %@", userEmail)
 
         do {
             return try context.fetch(request)
@@ -66,7 +66,7 @@ class CoreDataManager {
         expense.amount = amount
         expense.date = date
         expense.category = category
-        expense.userEmail = userEmail  // ✅ burası
+        expense.userEmail = userEmail
 
         do {
             try context.save()
@@ -79,7 +79,7 @@ class CoreDataManager {
     func fetchExpenses(for userEmail: String) -> [Expense] {
         let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        request.predicate = NSPredicate(format: "userEmail == %@", userEmail)  // ✅ filtre
+        request.predicate = NSPredicate(format: "userEmail == %@", userEmail) 
 
         do {
             return try context.fetch(request)

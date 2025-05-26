@@ -143,7 +143,7 @@ class HomeViewController: UIViewController {
 
     @objc private func toggleTransactions() {
         showingAllTransactions.toggle()
-        transactionsTableView.reloadData()
+        updateTransactions()
     }
 
     @objc private func didTapPreviousMonth() {
@@ -217,6 +217,7 @@ class HomeViewController: UIViewController {
 
         DispatchQueue.main.async {
             self.transactionsTableView.reloadData()
+            self.seeAllButton.isHidden = self.showingAllTransactions || self.allTransactions.count <= 5
         }
     }
 }

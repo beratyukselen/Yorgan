@@ -7,8 +7,6 @@ import UIKit
 
 class ExpensesViewController: UIViewController {
 
-    // MARK: - UI Components
-
     private let tableView = UITableView()
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -52,12 +50,8 @@ class ExpensesViewController: UIViewController {
     private let topContainer = UIView()
     private let topStack = UIStackView()
 
-    // MARK: - ViewModel
-
     private let viewModel = ExpensesViewModel()
     private var selectedMonth = Date()
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,8 +71,6 @@ class ExpensesViewController: UIViewController {
         viewModel.fetchExpenses()
         viewModel.filter(searchText: searchBar.text ?? "", for: selectedMonth)
     }
-
-    // MARK: - Setup Methods
 
     private func setupTopBar() {
         view.addSubview(topContainer)
@@ -168,8 +160,6 @@ class ExpensesViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    // MARK: - Actions
-
     @objc private func prevMonthTapped() {
         selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? Date()
         updateMonthLabel()
@@ -190,6 +180,7 @@ class ExpensesViewController: UIViewController {
 
     @objc private func handleExpenseAdded() {
         viewModel.fetchExpenses()
+        self.viewModel.filter(searchText: self.searchBar.text ?? "", for: self.selectedMonth)
     }
 
     private func updateMonthLabel() {
@@ -199,15 +190,11 @@ class ExpensesViewController: UIViewController {
     }
 }
 
-// MARK: - UISearchBarDelegate
-
 extension ExpensesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.filter(searchText: searchText, for: selectedMonth)
     }
 }
-
-// MARK: - UITableViewDataSource & Delegate
 
 extension ExpensesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

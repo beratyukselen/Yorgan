@@ -18,11 +18,12 @@ class ExpensesViewModel {
 
     // MARK: - Data Methods
 
-    func fetchExpenses() {
+    func fetchExpenses(completion: (() -> Void)? = nil) {
         let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
         allExpenses = CoreDataManager.shared.fetchExpenses(for: userEmail)
         expenses = allExpenses
         onDataUpdated?()
+        completion?()
     }
 
     func fetchExpenses(for date: Date) {
@@ -51,6 +52,14 @@ class ExpensesViewModel {
         let userEmail = UserDefaults.standard.string(forKey: "currentUserEmail") ?? ""
         CoreDataManager.shared.saveExpense(title: title, amount: amount, date: date, category: category, userEmail: userEmail)
         fetchExpenses()
+    }
+    
+    func removeExpense(at index: Int) {
+        let expense = expenses[index]
+        CoreDataManager.shared.deleteExpense(expense)
+        expenses.remove(at: index)
+        allExpenses.removeAll { $0.objectID == expense.objectID }
+        onDataUpdated?()
     }
 
     func categoryTotals() -> [String: Double] {
