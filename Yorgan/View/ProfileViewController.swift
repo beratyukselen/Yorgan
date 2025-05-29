@@ -13,28 +13,23 @@ class ProfileViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIStackView()
 
-    // Kullanıcı Bilgi Kartı
     private let userInfoCard = UIView()
     private let nameLabel = UILabel()
     private let surnameLabel = UILabel()
     private let emailLabel = UILabel()
 
-    // Bilgi Grubu
     private let infoHeaderLabel = UILabel()
     private let rateAppButton = UIButton(type: .system)
     private let contactDevButton = UIButton(type: .system)
     private let privacyPolicyButton = UIButton(type: .system)
 
-    // Versiyon
     private let versionLabel = UILabel()
 
-    // Veri Grubu
     private let dataHeaderLabel = UILabel()
     private let backupButton = UIButton(type: .system)
     private let restoreButton = UIButton(type: .system)
     private let resetButton = UIButton(type: .system)
 
-    // Çıkış
     private let logoutButton = UIButton(type: .system)
 
     override func viewDidLoad() {
