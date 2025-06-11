@@ -21,23 +21,22 @@ exports.sendVerificationCode = functions.https.onCall(async (data, context) => {
   }
 
   const code = generateCode();
-  const expireAt = Date.now() + 5 * 60 * 1000; // 5 dakika
-
-  // Firestore’a yaz
-  await db.collection("emailVerifications").doc(email).set({ code, expireAt });
+  const expireAt = Date.now() + 5 * 60 * 1000;
 
   const msg = {
     to: email,
-    from: "muhammedberat@ogrenci.beykoz.edu.tr", // SendGrid'de verified bir adres
+    from: "yorganapp2026@gmail.com", // Bu adres gerçekten SendGrid'de doğrulanmış olmalı
     subject: "Yorgan Doğrulama Kodu",
     html: `<p><strong>${code}</strong> doğrulama kodun. 5 dakika içinde kullanmalısın.</p>`
   };
 
   try {
-    await sgMail.send(msg);
+    await sgMail.send(msg); // önce mail gönderimi
+    await db.collection("emailVerifications").doc(email).set({ code, expireAt }); // sonra firestore kaydı
+    console.log("Kod başarıyla gönderildi:", code);
     return { success: true };
   } catch (error) {
-    console.error("Mail gönderilemedi:", error);
+    console.error("Mail gönderilemedi:", error.response?.body || error.message);
     throw new functions.https.HttpsError("internal", "Mail gönderilemedi.");
   }
 });

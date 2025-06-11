@@ -58,7 +58,7 @@ class ExpensesViewController: UIViewController {
         view.backgroundColor = .systemBackground
         title = "Giderler"
         navigationController?.setNavigationBarHidden(true, animated: false)
-
+        
         setupTopBar()
         setupTableView()
         setupAddButton()
@@ -68,8 +68,9 @@ class ExpensesViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.fetchExpenses()
-        viewModel.filter(searchText: searchBar.text ?? "", for: selectedMonth)
+        viewModel.fetchExpenses {
+            self.viewModel.filter(searchText: self.searchBar.text ?? "", for: self.selectedMonth)
+        }
     }
 
     private func setupTopBar() {
@@ -179,8 +180,9 @@ class ExpensesViewController: UIViewController {
     }
 
     @objc private func handleExpenseAdded() {
-        viewModel.fetchExpenses()
-        self.viewModel.filter(searchText: self.searchBar.text ?? "", for: self.selectedMonth)
+        viewModel.fetchExpenses {
+            self.viewModel.filter(searchText: self.searchBar.text ?? "", for: self.selectedMonth)
+        }
     }
 
     private func updateMonthLabel() {

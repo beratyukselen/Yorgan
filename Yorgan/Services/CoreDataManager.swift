@@ -60,13 +60,16 @@ class CoreDataManager {
         }
     }
     
-    func saveExpense(title: String, amount: Double, date: Date, category: String, userEmail: String) {
+    func saveExpense(title: String, amount: Double, date: Date, category: String, userEmail: String, isRecurring: Bool, recurrenceType: String?, nextDueDate: Date?) {
         let expense = Expense(context: context)
         expense.title = title
         expense.amount = amount
         expense.date = date
         expense.category = category
         expense.userEmail = userEmail
+        expense.isRecurring = isRecurring
+        expense.recurrenceType = recurrenceType
+        expense.nextDueDate = nextDueDate
 
         do {
             try context.save()
@@ -76,10 +79,27 @@ class CoreDataManager {
         }
     }
     
+    func isRecurringExpenseAlreadyAdded(title: String, amount: Double, date: Date, userEmail: String) -> Bool {
+        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        request.predicate = NSPredicate(format: "title == %@ AND amount == %f AND userEmail == %@ AND date >= %@ AND date < %@", title, amount, userEmail, startOfDay as NSDate, endOfDay as NSDate)
+
+        do {
+            let result = try context.fetch(request)
+            return !result.isEmpty
+        } catch {
+            print("❌ Kontrol fetch hatası: \(error)")
+            return false
+        }
+    }
+    
     func fetchExpenses(for userEmail: String) -> [Expense] {
         let request: NSFetchRequest<Expense> = Expense.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        request.predicate = NSPredicate(format: "userEmail == %@", userEmail) 
+        request.predicate = NSPredicate(format: "userEmail == %@", userEmail)
 
         do {
             return try context.fetch(request)
@@ -98,4 +118,16 @@ class CoreDataManager {
             print("❌ Gider silinemedi: \(error.localizedDescription)")
         }
     }
+    
+    func saveContext() {
+        if context.hasChanges {
+            do {
+                try context.save()
+                print("💾 Değişiklikler kaydedildi.")
+            } catch {
+                print("❌ Context kaydedilemedi: \(error.localizedDescription)")
+            }
+        }
+    }
 }
+
